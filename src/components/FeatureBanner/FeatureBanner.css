@@ -1,0 +1,22 @@
+.f-banner {
+    height: 175px;
+    .feature-banner {
+        height: 150px;
+        b {
+            color: #014f86;
+            font-size: larger;
+            font-weight: 700;
+        }
+        h3 {
+            text-align: left;
+            font-weight: 300;
+        }
+    }
+    .feature-banner.left {
+        --bs-gradient: linear-gradient(0.25turn, #c3c8c9, 5%, #fff);
+    }
+    
+    .feature-banner.right {
+        --bs-gradient: linear-gradient(0.75turn, #c3c8c9, 5%, #fff);
+    }
+}

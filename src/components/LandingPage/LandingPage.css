@@ -1,0 +1,40 @@
+.static-img{
+    background-image: url(../images/homescreenimg.png);
+    background-size: cover;
+    -moz-background-size: cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -99;
+}
+.overlay{
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.65);
+    z-index: -1;
+}
+.banner {
+    height: 708px;
+    position: relative;
+}
+.static-text{
+    text-align: left;
+    color: white;
+    .fs-lr {
+        font-size: larger;
+    }
+}
+.feature-title {
+    height: 100px;
+}
+
+.height-gap {
+    height: 50px;
+}
+

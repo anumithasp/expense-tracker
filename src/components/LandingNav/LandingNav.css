@@ -1,0 +1,32 @@
+.pl-pr-15 {
+    padding: 0px 15px 0px 15px;
+}
+.exp-btn-primary{
+    --bs-btn-bg: #014f86;
+    --bs-btn-border-color: #014f86;
+    --bs-btn-hover-bg:  #014f86;
+    --bs-btn-hover-border-color: #014f86;
+    --bs-btn-active-bg: #014f86;
+    --bs-btn-active-border-color: #014f86;
+    --bs-btn-disabled-bg: #014f86;
+    --bs-btn-disabled-border-color: #014f86;
+}
+
+.exp-btn-outline{
+    --bs-btn-color: #014f86;
+    --bs-btn-border-color: #014f86;
+    --bs-btn-hover-bg: none;
+    --bs-btn-hover-color: #014f86;
+    --bs-btn-hover-border-color: #014f86;
+    --bs-btn-active-bg: #014f86;
+    --bs-btn-active-border-color: #014f86;
+    --bs-btn-disabled-color: #014f86;
+    --bs-btn-disabled-border-color: #014f86;   
+}
+.exp-link{
+    color: #1e1e1e;
+    &:hover{
+        font-weight: 500;
+        color: #014f86;
+    } 
+}
