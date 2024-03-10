@@ -1,5 +1,6 @@
 import './App.css';
 import LandingPage from './components/LandingPage/LandingPage';
+import { Route, Routes } from 'react-router-dom';
 import "@fontsource/poppins";
 import "@fontsource/poppins/100.css"; 
 import "@fontsource/poppins/100-italic.css";
@@ -23,7 +24,9 @@ import "@fontsource/poppins/900-italic.css";
 function App() {
   return (
     <div className="App">
-      <LandingPage />
+      <Routes>
+        <Route path= '/' element = {<LandingPage />}></Route>
+      </Routes>
     </div>
   );
 }

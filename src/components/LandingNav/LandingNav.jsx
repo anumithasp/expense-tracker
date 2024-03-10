@@ -21,7 +21,7 @@ const LandingNav = () => {
                             <a className="nav-link exp-link" href="#services">Services</a>
                         </li>
                         <li className="nav-item pl-pr-15 pt-1">
-                            <a className="nav-link exp-link" href="#">Customer Care</a>
+                            <a className="nav-link exp-link" href="#customer-care">Customer Care</a>
                         </li>
                         <li className="nav-item pl-pr-15">
                             <a className="nav-link" href="#">

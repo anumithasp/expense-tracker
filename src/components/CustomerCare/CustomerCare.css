@@ -1,0 +1,28 @@
+.customer-care {
+    .customer-banner{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #dfe4e4;
+        height: 180px;
+        b {
+            color: #014f86;
+            font-size: larger;
+            font-weight: 700;
+        }
+        h4 {
+            text-align: center;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        .contact {
+            span {
+                letter-spacing: 7px;
+            }
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+    }
+}

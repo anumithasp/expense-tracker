@@ -5,6 +5,8 @@ import EastIcon from '@mui/icons-material/East';
 import FeatureBanner from '../FeatureBanner/FeatureBanner';
 import AboutUs from '../AboutUs/AboutUs';
 import Services from '../Services/Services';
+import CustomerCare from '../CustomerCare/CustomerCare';
+import Footer from '../Footer/Footer';
 
 const LandingPage = () => {
 
@@ -39,6 +41,8 @@ const LandingPage = () => {
         <FeatureBanner words={featureBannerWordsThree} image={"safepanel3.png"} fromLeft={true}/>
         <AboutUs />
         <Services />
+        <CustomerCare />
+        <Footer />
       </div>     
     </div>
   )

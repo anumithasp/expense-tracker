@@ -1,0 +1,13 @@
+.footer {
+    margin-top: 70px;
+    .footer-banner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #dfe4e4;
+        height: 150px;
+        .icons {
+            justify-self: unset;
+        }
+    }
+}

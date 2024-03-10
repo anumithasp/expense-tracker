@@ -21,7 +21,7 @@ const Services = () => {
                     >
                     <div>
                         <h2>Budgeting</h2>
-                        <h5 style={{lineHeight: '1.5', fontWeight: '200', fontSize: 'large'}}>Say goodbye to guesswork and hello to precision with our intuitive budgeting tools.</h5>
+                        <h5 style={{lineHeight: '1.5', fontWeight: '300', fontSize: 'large'}}>Say goodbye to guesswork and hello to precision with our intuitive budgeting tools.</h5>
                     </div>
                     
                 </Box>
@@ -38,7 +38,7 @@ const Services = () => {
                     >
                     <div>
                         <h2>Setting Goals</h2>
-                        <h5 style={{lineHeight: '1.5', fontWeight: '200', fontSize: 'large'}}>With our goal-setting feature, setting and achieving financial goals is at the heart of what we do.</h5>
+                        <h5 style={{lineHeight: '1.5', fontWeight: '300', fontSize: 'large'}}>With our goal-setting feature, setting and achieving financial goals is at the heart of what we do.</h5>
                     </div>
                 </Box>
                 <Box
@@ -54,7 +54,7 @@ const Services = () => {
                     >
                     <div>
                         <h2>Compare & Grow</h2>
-                        <h5 style={{lineHeight: '1.5', fontWeight: '200', fontSize: 'large'}}>With our intuitive comparision feature, you can easily visualize and analyze your financial inflows and outflows.</h5>
+                        <h5 style={{lineHeight: '1.5', fontWeight: '300', fontSize: 'large'}}>With our intuitive comparision feature, you can easily visualize and analyze your financial inflows and outflows.</h5>
                     </div>
                 </Box>
             </div>
