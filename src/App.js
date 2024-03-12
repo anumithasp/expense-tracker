@@ -20,12 +20,14 @@ import "@fontsource/poppins/800.css";
 import "@fontsource/poppins/800-italic.css";
 import "@fontsource/poppins/900.css"; 
 import "@fontsource/poppins/900-italic.css";
+import SignUp from './components/SignUp/SignUp';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path= '/' element = {<LandingPage />}></Route>
+        <Route path='/signup' element ={<SignUp/>}></Route>
       </Routes>
     </div>
   );
