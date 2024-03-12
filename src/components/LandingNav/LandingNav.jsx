@@ -29,7 +29,7 @@ const LandingNav = () => {
                             </a>
                         </li>
                         <li className="nav-item pl-pr-15">
-                            <a className="nav-link" href="#">
+                            <a className="nav-link" href="/signup">
                                 <button className='btn btn-primary exp-btn-primary'>Sign Up</button>
                             </a>
                         </li>
