@@ -17,6 +17,16 @@
                 color: var(--exp-primary-color);
             }
         }
+        .login{
+            h5{
+                opacity: 0.8;
+                font-size:medium;
+            }
+            a{
+                text-decoration: none;
+                color: var(--exp-primary-color);
+            }
+        }
     }
     .signup-field {
         &::focus {
