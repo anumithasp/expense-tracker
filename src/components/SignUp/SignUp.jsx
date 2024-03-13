@@ -121,6 +121,9 @@ const SignUp = () => {
               </Button>
             </Box>
           </Box>
+          <div className='login'>
+              <h5>Already have an account? <a href="/login">Login</a></h5>
+          </div> 
         </Grid>
         <Grid
           item
@@ -144,7 +147,7 @@ const SignUp = () => {
             </div> 
             <div className='img-content'>
               <h5><p className='title'>Get Started By Creating Account</p></h5>
-              <p className='content'>Empowering you to track expenses and achieve financial goals seamlessly</p>
+              <p className='content'>Empowering you to track expenses and achieve financial goals seamlessly.</p>
             </div>
             <div className='copyright'>
               <p><Copyright /> Ayoola</p>
