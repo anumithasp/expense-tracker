@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  --exp-primary-color: #014f86;
+  --exp-font-family: "Poppins" !important;
 }
 
 .App-logo {
@@ -39,5 +41,17 @@
 
 body{
   overflow-x: hidden;
-  font-family: "Poppins";
+  font-family: "Poppins" !important;
+}
+
+.exp-btn-primary{
+  color: white;
+  --bs-btn-bg: #014f86;
+  --bs-btn-border-color: #014f86;
+  --bs-btn-hover-bg:  #014f86;
+  --bs-btn-hover-border-color: #014f86;
+  --bs-btn-active-bg: #014f86;
+  --bs-btn-active-border-color: #014f86;
+  --bs-btn-disabled-bg: #014f86;
+  --bs-btn-disabled-border-color: #014f86;
 }
