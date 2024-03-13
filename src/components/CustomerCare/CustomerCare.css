@@ -6,7 +6,7 @@
         background-color: #dfe4e4;
         height: 180px;
         b {
-            color: #014f86;
+            color: var(--exp-primary-color);
             font-size: larger;
             font-weight: 700;
         }
@@ -23,6 +23,14 @@
                 text-decoration: none;
                 color: black;
             }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .customer-care {
+        .customer-banner{
+            height: 300px;
         }
     }
 }

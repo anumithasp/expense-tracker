@@ -9,7 +9,7 @@ const Footer = () => {
     const iconStyle = {
         color: '#014f86',
         padding: '0 20px 0px 20px',
-        'font-size': 'large' 
+        fontSize: 'large' 
     }
 
     return (

@@ -20,3 +20,30 @@
         --bs-gradient: linear-gradient(0.75turn, #c3c8c9, 5%, #fff);
     }
 }
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+    .feature-banner {
+        img {
+            height: 125px !important;
+        }
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+    .feature-banner {
+        img {
+            height: 100px !important;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .feature-banner {
+        img {
+            display: none;
+        }
+        .height-gap {
+            height: 10px;
+        }
+    }
+}

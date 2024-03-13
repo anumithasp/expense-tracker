@@ -1,78 +1,75 @@
-.signup-container {
-    display: flex;
-    margin: 50px;
-    justify-items: center;
-    /* height: 100%; */
-    /* background-size: cover;   */
-}
-  
-.signup-section {
-    flex: 1;
-    width: 50%;
-    height: 100%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.signup-section form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-.signup-section label {
-    margin-bottom: 5px;
-}
-  
-.signup-section input {
-    margin-bottom: 10px;
-    padding: 5px;
-}
-  
-.signup-section button {
-    margin-top: 10px;
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-}
-  
-.signup-section p {
-   
-    margin-top: 20px;
-    cursor: pointer;
-}
-  
-.signup-section p:hover {
-    text-decoration: underline;
+.sign-up {
+    padding: 75px 250px;
+    background-color: #dbe2f6;
+    height: 100vh;
+    font-family: var(--exp-font-family);
+    .sign-up-wrapper {
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+        .checkbox {
+            input {
+                border-color: var(--exp-primary-color);
+            }
+            label{
+                font-size: small;
+                color: var(--exp-primary-color);
+            }
+        }
+        .login{
+            h5{
+                opacity: 0.8;
+                font-size:medium;
+            }
+            a{
+                text-decoration: none;
+                color: var(--exp-primary-color);
+            }
+        }
+    }
+    .signup-field {
+        &::focus {
+            color: #014f86;
+        }
+        label {
+            color: #014f86;
+        }
+    }
+    .code-button {
+        background-color: var(--exp-primary-color);
+        &:hover {
+            background-color: var(--exp-primary-color);
+        }
+    }
+    .sign-up-img-content {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        width: 100vh;
+        .img-size{
+            display: flex;
+            align-items: start;
+            padding: 20px;
+        }
+        .img-content{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            .title{
+                margin-bottom: 0px;
+            }
+            .content{
+                opacity: 0.6;
+                padding: 0px 20px;
+            }
+        }
+        .copyright {
+            opacity: 0.5;
+        }
+    }
 }
 
- /* .second-half-section h2 {
-    align-self: flex-start;
-    
-} */
-.second-half-section {
-    width: 50%;
-    background-image: url(../images/sign.png);
-    border-radius: 20px;
-    color: white;
-    padding: 20px;
-    /* size: 50%; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    text-align: center; 
-}
-.second-half-section p {
-    margin: 0;
-    /* text-align: center;
-    font-size: smaller; */
-    /* padding-left: 8px; */
-    
-} 
-.second-half-section h5{
-    font-size: x-large;
-} 
-.second-half-section p:last-child {
-    align-self: center;
-}
+
