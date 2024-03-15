@@ -1,40 +1,150 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './SignUp.css';
-import { Link } from 'react-router-dom';
-import { Box, Grid, Paper, TextField, Typography, Button, FormControlLabel } from '@mui/material';
+import { Box, Grid, TextField, Button, FormHelperText } from '@mui/material';
 import Form from 'react-bootstrap/Form'
-import { Copyright } from '@mui/icons-material';
+import { Copyright, ContentCopy } from '@mui/icons-material';
+import axios from 'axios';
+import Dashboard from '../Dashboard/Dashboard';
 
 const SignUp = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [familyName, setFamilyName] = useState('');
-    const [agreeTerms, setAgreeTerms] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [showCode, setShowCode] = useState(false);
+    const [isNameValid, setIsNameValid] = useState(true);
+    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [isPasswordValid, setIsPasswordValid] = useState(true);
+    const [isUniqueCodeValid, setIsUniqueCodeValid] = useState(true);
+    const [isEmailFormatValid, setIsEmailFormatValid] = useState(true);
+    const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(true);
+    const [isEmailExist, setIsEmailExist] = useState(false);
+
+    const[input, setInput] = new useState(
+      {
+        name: "",
+        email: "",
+        password: "",
+        uniqueCode: "",
+        checkedCode: false
+      }
+    )
+
+    const inputHandler= (event)=> {
+      setInput({...input,[event.target.name]:event.target.value});
+      if(event.target.name === "name") {
+        if(event.target.value === "") {
+          setIsNameValid(false);
+        } else {
+          setIsNameValid(true);
+        }
+      }
+      if(event.target.name === "email") {
+        if(event.target.value === "") {
+          setIsEmailValid(false);
+          setIsEmailFormatValid(false);
+        } else {
+          if(validateEmail(event.target.value)){
+            setIsEmailFormatValid(true);
+            axios.get("http://localhost:8080/emailExists?email=" + event.target.value).then(
+              (response) => {
+                if(response.data.code == "200") {
+                  setIsEmailExist(true);
+                  setIsEmailValid(false);
+                } else if (response.data.code == "404") {
+                  setIsEmailExist(false);
+                  setIsEmailValid(true);
+                } else {
+                  setIsEmailExist(false);
+                  setIsEmailValid(false);
+                }
+              }
+            );
+          } else {
+            setIsEmailValid(false);
+            setIsEmailFormatValid(false);
+          }  
+        }
+      }
+      if(event.target.name === "password") {
+        if(event.target.value === "") {
+          setIsPasswordValid(false);
+        } else {
+          if((event.target.value.length) >= 8){
+            setIsPasswordValid(true);
+            setIsPasswordLengthValid(true);
+          } else {
+            setIsPasswordLengthValid(false);
+            setIsPasswordValid(false);
+          }    
+        }
+      }
+      if(event.target.name === "uniqueCode") {
+        if(event.target.value === "") {
+          setIsUniqueCodeValid(false);
+        } else {
+          setIsUniqueCodeValid(true);
+        }
+      }
+    }
+
 
     const [showButton, setShowButton] = useState(false);
 
     const handleCheck = (e) => {
+      setInput({...input,[e.target.name]:e.target.checked});
+      setInput({...input,["uniqueCode"]:""});
       setShowButton((showButton) => e.target.checked);
+      setShowCode(false);
     }
   
     const handleRegister = (e) => {
+      console.log(input);
       e.preventDefault();
-      // Add your registration logic here
-      if (agreeTerms) {
-        // Perform registration
-        console.log('Registration successful');
-      } else {
-        alert('Please agree to the terms and conditions');
-      }
+      axios.post("http://localhost:8080/signup",input).then(
+        (response)=>{
+            console.log(response.data);
+          //  {"status":"success"}
+        }
+      )
     };
-  
+
+    const generateUniqueCode = () => {
+      let charset = "";
+      let newCode = "";
+      charset += "0123456789";
+      charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+      for (let i = 0; i < 8; i++) {
+          newCode += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      setInput({...input,["uniqueCode"]:newCode});
+      setShowCode(true);
+  };
+
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(input.uniqueCode).then(
+        function(){
+          setSuccessMessage("Code copied to clipboard!");
+          setTimeout(() => setSuccessMessage(""), 2000);
+          // Hide message after 2 seconds
+        })
+      .catch(
+         function(err) {
+            console.log(err);
+      });
+    };
+
+    const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
+
     return (
       <div className='sign-up'>
         <div className='sign-up-wrapper'>
-        <Grid container component="main">
-        <Grid item xs={12} sm={8} md={6}>
+        <Grid container component="main" className='wrapper-main'>
+        <Grid className='sign-up-input' item xs={12} sm={8} md={6}>
           <Box
             sx={{
               my: 4,
@@ -46,7 +156,9 @@ const SignUp = () => {
           >
             <h3 style={{ textAlign: 'left', color: '#014f86'}}>Welcome!</h3>
             <Box component="form" noValidate sx={{ mt: 1 }}>
+              <Dashboard />
               <TextField className='signup-field'
+                error={!isNameValid}
                 margin="normal"
                 required
                 fullWidth
@@ -55,17 +167,25 @@ const SignUp = () => {
                 name="name"
                 autoComplete="name"
                 autoFocus
+                value = {input.name}
+                onChange={inputHandler}
               />
               <TextField
+                error={!isEmailValid}
                 margin="normal"
                 required
                 fullWidth
                 name="email"
                 label="E-mail Id"
                 id="email"
-                autoComplete="email"  
+                autoComplete="email"
+                value = {input.email}
+                onChange={inputHandler}  
+                helperText = {isEmailFormatValid ? (isEmailExist ? "Email already exists." : "") : "Please enter a valid email-id."}
               />
               <TextField
+                error={!isPasswordValid}
+                type='password'
                 margin="normal"
                 required
                 fullWidth
@@ -73,8 +193,12 @@ const SignUp = () => {
                 label="Password"
                 id="password"
                 autoComplete="password"
+                value = {input.password}
+                onChange={inputHandler}
+                helperText = {isPasswordLengthValid ? "" : "Password must have atleast 8 characters."}
               />
               {!showButton && <TextField
+                error={!isUniqueCodeValid}
                 margin="normal"
                 required
                 fullWidth
@@ -83,33 +207,46 @@ const SignUp = () => {
                 id="uniqueCode"
                 type='text'
                 autoComplete="uniqueCode"
+                value = {input.uniqueCode}
+                onChange={inputHandler}
               />}
-              {!showButton && <div className="input-group">
+              {showButton && !showCode && <Button className='code-button'
+                type="button"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 2, backgroundColor: "#014f86", fontFamily: "Poppins"}}
+                onClick={generateUniqueCode}
+              >
+                Generate your Unique Family Code
+              </Button>}
+              {showCode && <Button
+                type="button"
+                fullWidth
+                variant="outlined"
+                sx={{ mt: 1, mb: 2, color: "#014f86", fontFamily: "Poppins"}}
+                onClick={copyToClipboard}
+                endIcon={<ContentCopy />}
+              >
+                {input.uniqueCode}
+              </Button>}
+              {showCode && <FormHelperText>Click to copy and share the code with family members when they sign-up.</FormHelperText>}
+              {successMessage && (
+                <p style={{
+                        color: "green",
+                        textAlign: "center",
+                    }}>
+                    {successMessage}
+                </p>
+              )}
+              <div className="input-group">
                   <Form.Check className='checkbox'
+                    name='checkedCode'
                     type={'checkbox'}
                     id={`default-checkbox`}
                     label={`I do not have family unique code`}
                     onClick={handleCheck}
                   />
-              </div>}
-              {showButton && <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="familyName"
-                label="Family Name"
-                id="familyName"
-                type='text'
-                autoComplete="familyName"
-              /> }
-              {showButton && <Button className='code-button'
-                type="button"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 1, mb: 2, backgroundColor: "#014f86", fontFamily: "Poppins"}}
-              >
-                Generate your Unique Family Code
-              </Button>}
+              </div>
               <Button className='signup-button'
                 type="submit"
                 fullWidth
@@ -125,7 +262,7 @@ const SignUp = () => {
               <h5>Already have an account? <a href="/login">Login</a></h5>
           </div> 
         </Grid>
-        <Grid
+        <Grid className='sign-up-img'
           item
           xs={false}
           sm={4}
