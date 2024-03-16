@@ -5,9 +5,10 @@ import Form from 'react-bootstrap/Form'
 import { Copyright, ContentCopy } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import * as bootstrap from 'bootstrap';
+import Toast from '../Toast/Toast';
 
 const SignUp = () => {
-    const [successMessage, setSuccessMessage] = useState("");
     const [showCode, setShowCode] = useState(false);
     const [isNameValid, setIsNameValid] = useState(true);
     const [isEmailValid, setIsEmailValid] = useState(true);
@@ -125,8 +126,9 @@ const SignUp = () => {
     const copyToClipboard = () => {
       navigator.clipboard.writeText(input.uniqueCode).then(
         function(){
-          setSuccessMessage("Code copied to clipboard!");
-          setTimeout(() => setSuccessMessage(""), 2000);
+          const toastLiveExample = document.getElementById('liveToast');
+          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+          toastBootstrap.show();
           // Hide message after 2 seconds
         })
       .catch(
@@ -146,22 +148,29 @@ const SignUp = () => {
     const handleRegister = (e) => {
       console.log(input);
       e.preventDefault();
-      if (isNameValid && isEmailValid && !isEmailExist && isPasswordValid){
-        if (!input.checkedCode && isUniqueCodeValid) {
-          axios.post("http://localhost:8080/signup",input).then(
-            (response)=>{
-                console.log(response.data);
-                if (response.data.status == "success"){
-                  sessionStorage.setItem("id", response.data.id);
-                  sessionStorage.setItem("token", response.data.token);
-                  navigate("/dashboard");
-                } else {
-                  alert("Invalid credentials");
-                }  
-            }
-          ).catch((err)=> {
-            console.log(err);
-          })
+      if(input.name === "" || input.email === "" || input.password === "" || (!input.checkedCode && input.uniqueCode === "")) {
+        input.name === "" && setIsNameValid(false);
+        input.email === "" && setIsEmailValid(false);
+        input.password === "" && setIsPasswordValid(false);
+        (!input.checkedCode && input.uniqueCode === "") && setIsUniqueCodeValid(false);
+      } else {
+        if (isNameValid && isEmailValid && !isEmailExist && isPasswordValid){
+          if (!input.checkedCode && isUniqueCodeValid) {
+            axios.post("http://localhost:8080/signup",input).then(
+              (response)=>{
+                  console.log(response.data);
+                  if (response.data.status === "success"){
+                    sessionStorage.setItem("id", response.data.id);
+                    sessionStorage.setItem("token", response.data.token);
+                    navigate("/dashboard");
+                  } else {
+                    alert("Invalid credentials");
+                  }  
+              }
+            ).catch((err)=> {
+              console.log(err);
+            })
+          }
         }
       }
     };
@@ -169,6 +178,7 @@ const SignUp = () => {
     return (
       <div className='sign-up'>
         <div className='sign-up-wrapper'>
+        <Toast message="Copied to clipboard!" />
         <Grid container component="main" className='wrapper-main'>
         <Grid className='sign-up-input' item xs={12} sm={8} md={6}>
           <Box
@@ -236,7 +246,7 @@ const SignUp = () => {
                 onChange={inputHandler}
                 helperText = {!isCodeExist ? "Please enter a valid code." : ""}
               />}
-              {showButton && !showCode && <Button className='code-button'
+              {(showButton && !showCode) && <Button className='code-button'
                 type="button"
                 fullWidth
                 variant="contained"
@@ -256,14 +266,6 @@ const SignUp = () => {
                 {input.uniqueCode}
               </Button>}
               {showCode && <FormHelperText>Click to copy and share the code with family members when they sign-up.</FormHelperText>}
-              {successMessage && (
-                <p style={{
-                        color: "green",
-                        textAlign: "center",
-                    }}>
-                    {successMessage}
-                </p>
-              )}
               <div className="input-group">
                   <Form.Check className='checkbox'
                     name='checkedCode'

@@ -1,0 +1,10 @@
+.toast-msg {
+    display: flex;
+    justify-self: flex-start;
+    opacity: 1;
+}
+
+.exp-toast {
+    --bs-toast-bg: var(--exp-primary-color);
+    --bs-toast-color: white;
+}
