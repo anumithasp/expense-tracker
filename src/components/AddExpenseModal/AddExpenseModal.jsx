@@ -55,7 +55,9 @@ const AddExpenseModal = () => {
   
     return (
       <div>
-        <Button onClick={handleOpen}>Add Expense</Button>
+        <a className="nav-link" href="#">
+            <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Expense </button>
+        </a>
         <Modal
           open={open}
           onClose={handleClose}
