@@ -4,7 +4,7 @@ import { Box, Grid, TextField, Button, FormHelperText } from '@mui/material';
 import Form from 'react-bootstrap/Form'
 import { Copyright, ContentCopy } from '@mui/icons-material';
 import axios from 'axios';
-import Dashboard from '../Dashboard/Dashboard';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [successMessage, setSuccessMessage] = useState("");
@@ -16,6 +16,8 @@ const SignUp = () => {
     const [isEmailFormatValid, setIsEmailFormatValid] = useState(true);
     const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(true);
     const [isEmailExist, setIsEmailExist] = useState(false);
+    const [isCodeExist, setIsCodeExist] = useState(true);
+    const navigate = useNavigate();
 
     const[input, setInput] = new useState(
       {
@@ -45,10 +47,10 @@ const SignUp = () => {
             setIsEmailFormatValid(true);
             axios.get("http://localhost:8080/emailExists?email=" + event.target.value).then(
               (response) => {
-                if(response.data.code == "200") {
+                if(response.data.code === 200) {
                   setIsEmailExist(true);
                   setIsEmailValid(false);
-                } else if (response.data.code == "404") {
+                } else if (response.data.code === 404) {
                   setIsEmailExist(false);
                   setIsEmailValid(true);
                 } else {
@@ -80,7 +82,19 @@ const SignUp = () => {
         if(event.target.value === "") {
           setIsUniqueCodeValid(false);
         } else {
-          setIsUniqueCodeValid(true);
+            axios.get("http://localhost:8080/codeExists?code=" + event.target.value).then(
+              (response) => {
+                if(response.data.code === 200){
+                  setIsCodeExist(true);
+                  setIsUniqueCodeValid(true);
+                } else if (response.data.code === 404){
+                  setIsCodeExist(false);
+                  setIsUniqueCodeValid(false);
+                } else {
+                  setIsUniqueCodeValid(false);
+                }
+              }
+            )
         }
       }
     }
@@ -95,17 +109,6 @@ const SignUp = () => {
       setShowCode(false);
     }
   
-    const handleRegister = (e) => {
-      console.log(input);
-      e.preventDefault();
-      axios.post("http://localhost:8080/signup",input).then(
-        (response)=>{
-            console.log(response.data);
-          //  {"status":"success"}
-        }
-      )
-    };
-
     const generateUniqueCode = () => {
       let charset = "";
       let newCode = "";
@@ -140,6 +143,29 @@ const SignUp = () => {
         );
     };
 
+    const handleRegister = (e) => {
+      console.log(input);
+      e.preventDefault();
+      if (isNameValid && isEmailValid && !isEmailExist && isPasswordValid){
+        if (!input.checkedCode && isUniqueCodeValid) {
+          axios.post("http://localhost:8080/signup",input).then(
+            (response)=>{
+                console.log(response.data);
+                if (response.data.status == "success"){
+                  sessionStorage.setItem("id", response.data.id);
+                  sessionStorage.setItem("token", response.data.token);
+                  navigate("/dashboard");
+                } else {
+                  alert("Invalid credentials");
+                }  
+            }
+          ).catch((err)=> {
+            console.log(err);
+          })
+        }
+      }
+    };
+
     return (
       <div className='sign-up'>
         <div className='sign-up-wrapper'>
@@ -156,7 +182,6 @@ const SignUp = () => {
           >
             <h3 style={{ textAlign: 'left', color: '#014f86'}}>Welcome!</h3>
             <Box component="form" noValidate sx={{ mt: 1 }}>
-              <Dashboard />
               <TextField className='signup-field'
                 error={!isNameValid}
                 margin="normal"
@@ -209,6 +234,7 @@ const SignUp = () => {
                 autoComplete="uniqueCode"
                 value = {input.uniqueCode}
                 onChange={inputHandler}
+                helperText = {!isCodeExist ? "Please enter a valid code." : ""}
               />}
               {showButton && !showCode && <Button className='code-button'
                 type="button"
