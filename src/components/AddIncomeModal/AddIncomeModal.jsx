@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -15,7 +15,7 @@ const style = {
   p: 4,
 };
 
-const AddExpenseModal = () => {
+const AddIncomeModal = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -23,7 +23,7 @@ const AddExpenseModal = () => {
     return (
       <div>
         <a className="nav-link" href="#">
-            <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Expense </button>
+            <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Income </button>
         </a>
         <Modal
           open={open}
@@ -44,4 +44,4 @@ const AddExpenseModal = () => {
     );
 }
 
-export default AddExpenseModal
+export default AddIncomeModal
