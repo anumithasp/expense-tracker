@@ -44,53 +44,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: 'center',
-//   color: theme.palette.text.secondary,
-// }));
-
-// const BootstrapInput = styled(InputBase)(({ theme }) => ({
-//   'label + &': {
-//     marginTop: theme.spacing(4),
-//   },
-//   '& .MuiInputBase-input': {
-//     borderRadius: 4,
-//     position: 'relative',
-//     backgroundColor: theme.palette.mode === 'light' ? '#F3F6F9' : '#1A2027',
-//     border: '1px solid',
-//     borderColor: theme.palette.mode === 'light' ? '#E0E3E7' : '#2D3843',
-//     fontSize: 17,
-//     width: 'large',
-//     padding: '10px 12px',
-//     transition: theme.transitions.create([
-//       'border-color',
-//       'background-color',
-//       'box-shadow',
-//     ]),
-//     fontFamily: [
-//       '-apple-system',
-//       'BlinkMacSystemFont',
-//       '"Segoe UI"',
-//       'Roboto',
-//       '"Helvetica Neue"',
-//       'Arial',
-//       'sans-serif',
-//       '"Apple Color Emoji"',
-//       '"Segoe UI Emoji"',
-//       '"Segoe UI Symbol"',
-//     ].join(','),
-//     '&:focus': {
-//       boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
-//       borderColor: theme.palette.primary.main,
-//     },
-//   },
-// }));
-
-
-
 const AddExpenseModal = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
