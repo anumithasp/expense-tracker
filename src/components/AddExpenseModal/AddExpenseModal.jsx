@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,6 +23,10 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
+import axios from 'axios';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import { DateField } from '@mui/x-date-pickers';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 
 const style = {
   position: 'absolute',
@@ -96,48 +100,47 @@ const AddExpenseModal = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [amount, setAmount] = React.useState('00.00');
-    // const [gstRate, setGstRate] = React.useState(5);
+    const [input, setInput] = useState({
+      amount: 0.0,
+      gst: 0,
+      date: new Date(),
+      payee: '',
+      category: 1,
+      paymentType: 1,
+      description: ''
+    });
 
-    const gstRates = [
-      {
-        value: '500.78',
-        label: '5%($00.00)',
-      },
-      {
-        value: '1008.9',
-        label: '10%($00.00)',
-      },
-      {
-        value: '2089',
-        label: '15%($00.00)',
-      },
-      {
-        value: '3500.90',
-        label: '20%($00.00)',
-      },
-    ];
+    const inputHandler= (event)=> {
+      setInput({...input,[event.target.name]:event.target.value});
+  
+    }
 
-    const categories = [
-      'Education',
-      'Food',
-      'Shopping',
-      'Travel',
-      'Grocery',
-      'Vehicle Expenses',
-      'Insurance',
-      'Gifts',
-    ];
+    const addExpense = (event) =>{
+      console.log(input);
+    }
+  
+    const [categories, setCategories] = useState([]);
+    const [paymentTypes, setPaymentTypes] = useState([]);
+    useEffect(() => {
+      axios.get("http://localhost:8080/categories").then(
+              (response)=>{
+                  console.log(response.data);
+                  setCategories(response.data.categories);
+              }
+            ).catch((err)=> {
+              console.log(err);
+            })
+      axios.get("http://localhost:8080/paymentTypes").then(
+        (response)=>{
+            console.log(response.data);
+            setPaymentTypes(response.data.paymentTypes);
+        }
+      ).catch((err)=> {
+        console.log(err);
+      })
+    },[])
 
-    const paymentTypes = [
-      'UPI Payment', 
-      'Cash Payment',
-      'Card Payment'
-    ];
 
-    const handleAmountChange = (event) => {
-      setAmount(event.target.value);
-    };
 
     
     return (
@@ -196,35 +199,31 @@ const AddExpenseModal = () => {
                     <TextField
                     size="medium"
                     id="amount"
-                    value={amount}
-                    // defaultValue="$00.00"
+                    name='amount'
+                    value={input.amount}
+                    onChange={inputHandler}
+                    placeholder="0.0"  
                     InputProps={{
-                      startAdornment: <span>$</span>
+                      startAdornment: <CurrencyRupeeIcon sx={{fontSize:'medium'}}/>
                     }}
-                    onChange={handleAmountChange}
                     sx={{ width: '100%'}}
                     />
                     </FormControl>
                   </Grid>
 
                   <Grid item xs={3} sm={4} md={3}>
-                    <InputLabel  htmlFor="rate">
+                    <InputLabel  htmlFor="gst">
                       GST Rate
                     </InputLabel>
                     <TextField
-                    id="rate"
+                    id="gst"
                     size="medium"
-                    select
-                    defaultValue="500.78"
-                    SelectProps={{
-                      native: true,
-                    }}
-                  >
-                    {gstRates.map((option) => (
-                    <option key={option.value} value={option.value}>
-                    {option.label}
-                    </option>
-                    ))}
+                    name='gst'
+                    value={input.gst}
+                    onChange={inputHandler}
+                    placeholder="0%"
+                    >
+                  
                     </TextField> 
                   </Grid>
 
@@ -233,35 +232,16 @@ const AddExpenseModal = () => {
                     Date
                   </InputLabel>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                    renderInput={(params) => (
-                    <TextField
-                    {...params}
-                    size="small"
-                    id="date"
-                    sx={{ width: 'small'}} 
-                   />)}
-                   />
+                  <DemoContainer components={['DatePicker']}>
+                      <DatePicker
+                      name='date' 
+                      value={input.date}
+                      onChange={inputHandler} />
+                  </DemoContainer>
                   </LocalizationProvider>
                   </Grid> 
 
-                  <Grid item xs={3} sm={4} md={3}>
-                    <InputLabel  htmlFor="time">
-                      Time
-                    </InputLabel>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <TimePicker
-                      renderInput={(params) => (
-                      <TextField
-                      {...params}
-                      size="small"
-                      id="time"
-                      sx={{ width: '20%',fontSize:'xx-small'}}
-                      />
-                      )}
-                      />
-                    </LocalizationProvider>
-                  </Grid>
+                  
 
                   <Grid item xs={4} sm={6} md={4}>
                     <InputLabel  htmlFor="payee">
@@ -270,7 +250,9 @@ const AddExpenseModal = () => {
                     <TextField
                     size="small"
                     id="payee"
-                    defaultValue="Melvin Thomas"
+                    name='payee'
+                    value={input.payee}
+                    onChange={inputHandler}
                     />
                   </Grid>
                   <Grid item xs={4} sm={6} md={4}>
@@ -280,6 +262,9 @@ const AddExpenseModal = () => {
                     <TextField
                     size="small"
                     id="category"
+                    name='category'
+                    value={input.category}
+                    onChange={inputHandler}
                     select
                     defaultValue="Education"
                     SelectProps={{
@@ -287,20 +272,24 @@ const AddExpenseModal = () => {
                     }}
                     >
                       {categories.map((category) => (
-                      <option key={category} value={category}>
-                      {category}
+                      <option key={category.id} value={category.id}>
+                      {category.name}
                       </option>
                       ))}
                     </TextField>
                   </Grid>
 
                   <Grid item xs={4} sm={6} md={4}>
-                    <InputLabel  htmlFor="payment-type">
+                    <InputLabel  htmlFor="paymentType">
                       Payment Type
                     </InputLabel>
                     <TextField
                     size="small"
-                    id="payment-type"
+                    id="paymentType"
+                    name='paymentType'
+                    value={input.paymentType}
+                    onChange={inputHandler}
+                    width='100%'
                     select
                     defaultValue="UPI Payment"
                     SelectProps={{
@@ -308,8 +297,8 @@ const AddExpenseModal = () => {
                     }}
                     >
                       {paymentTypes.map((paymentType) =>(
-                        <option key={paymentType} value={paymentType}>
-                          {paymentType}
+                        <option key={paymentType.id} value={paymentType.id}>
+                          {paymentType.type}
                         </option>
                       ))}
                     </TextField>
@@ -320,10 +309,13 @@ const AddExpenseModal = () => {
                       Description
                     </InputLabel>
                     <TextField
+                    name='description'
                     fullWidth
                     multiline
                     rows={2}
                     id="description"
+                    value={input.description}
+                    onChange={inputHandler}
                     placeholder="Type Here..."
                     sx={{fontSize:'50px'}}
                     />
@@ -331,7 +323,7 @@ const AddExpenseModal = () => {
                 </Grid>
                 
                 <DialogActions>
-                   <Button autoFocus variant="contained" size='medium' style={{backgroundColor: "#014f86"}} onClick={handleClose}>
+                   <Button autoFocus variant="contained" size='medium' style={{backgroundColor: "#014f86"}} onClick={addExpense}>
                     Update
                    </Button>
                 </DialogActions>
