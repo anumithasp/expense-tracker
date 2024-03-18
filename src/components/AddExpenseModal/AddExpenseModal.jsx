@@ -8,10 +8,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { MenuItem, alpha,styled } from '@mui/material';
 import dayjs from 'dayjs';
@@ -20,13 +18,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
 import axios from 'axios';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import { DateField } from '@mui/x-date-pickers';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
+import './AddExpenseModal.css';
 
 const style = {
   position: 'absolute',
@@ -46,6 +41,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
+  '& .MuiPaper-root': {
+    maxWidth: '800px',
+  },
 }));
 
 const AddExpenseModal = () => {
@@ -54,6 +52,7 @@ const AddExpenseModal = () => {
     const handleClose = () => setOpen(false);
 
     const [input, setInput] = useState({
+      title: '',
       amount: 0.0,
       gst: 0,
       date: new Date(),
@@ -144,15 +143,31 @@ const AddExpenseModal = () => {
                 </IconButton>
                 <DialogContent sx={{fontSize:'small'}}>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={3} sm={4} md={3}>
+                  <Grid item xs={12} sm={12} md={12}>
+                      <InputLabel  htmlFor="title">
+                      Title
+                      </InputLabel>
+                      <FormControl variant="standard">
+                      <TextField
+                      size="small"
+                      id="title"
+                      name='title'
+                      value={input.title}
+                      onChange={inputHandler}
+                      sx={{ width: '100%'}}
+                      />
+                      </FormControl>
+                    </Grid>
+                  <Grid item xs={3} sm={4} md={4}>
                     <InputLabel  htmlFor="amount">
                      Amount
                     </InputLabel>
                     <FormControl variant="standard">
                     <TextField
-                    size="medium"
+                    size="small"
                     id="amount"
                     name='amount'
+                    type='number'
                     value={input.amount}
                     onChange={inputHandler}
                     placeholder="0.0"  
@@ -164,33 +179,38 @@ const AddExpenseModal = () => {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={3} sm={4} md={3}>
+                  <Grid item xs={3} sm={4} md={4}>
                     <InputLabel  htmlFor="gst">
                       GST Rate
                     </InputLabel>
                     <TextField
                     id="gst"
-                    size="medium"
+                    type='number'
+                    size="small"
                     name='gst'
+                    sx={{ width: '100%'}}
                     value={input.gst}
                     onChange={inputHandler}
                     placeholder="0%"
+                    InputProps={{
+                      endAdornment: '%'
+                    }}
                     >
                   
                     </TextField> 
                   </Grid>
 
-                  <Grid item xs={3} sm={4} md={3} >
+                  <Grid item xs={3} sm={4} md={4}>
                   <InputLabel htmlFor="date">
                     Date
                   </InputLabel>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={['DatePicker']}>
-                      <DatePicker
-                      name='date' 
-                      value={input.date}
-                      onChange={inputHandler} />
-                  </DemoContainer>
+                  <LocalizationProvider sx={{ maxWidth: '100%' }} dateAdapter={AdapterDayjs}>
+                      <DatePicker className='expense-date'
+                        name='date' 
+                        size='small'
+                        value={dayjs(input.date)}
+                        onChange={inputHandler} 
+                      />
                   </LocalizationProvider>
                   </Grid> 
 
@@ -201,6 +221,7 @@ const AddExpenseModal = () => {
                       Payee
                     </InputLabel>
                     <TextField
+                    sx={{ width: '100%'}}
                     size="small"
                     id="payee"
                     name='payee'
@@ -213,6 +234,7 @@ const AddExpenseModal = () => {
                       Category
                     </InputLabel>
                     <TextField
+                    sx={{ width: '100%' }}
                     size="small"
                     id="category"
                     name='category'
@@ -232,17 +254,17 @@ const AddExpenseModal = () => {
                     </TextField>
                   </Grid>
 
-                  <Grid item xs={4} sm={6} md={4}>
+                  <Grid sx={{ width: '30%' }} item xs={4} sm={6} md={4}>
                     <InputLabel  htmlFor="paymentType">
                       Payment Type
                     </InputLabel>
                     <TextField
+                    sx={{ width: '100%' }}
                     size="small"
                     id="paymentType"
                     name='paymentType'
                     value={input.paymentType}
                     onChange={inputHandler}
-                    width='100%'
                     select
                     defaultValue="UPI Payment"
                     SelectProps={{
