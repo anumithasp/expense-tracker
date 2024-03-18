@@ -27,14 +27,14 @@ const LoginNav = () => {
                         <li className="nav-item pl-pr-15">
                             <AddIncomeModal />
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li className="nav-item dropdown">
+                            <a className="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Profile
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <ul className="dropdown-menu">
+                                <li><a className="dropdown-item" href="#">Action</a></li>
+                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                <li><a className="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
                     </ul>

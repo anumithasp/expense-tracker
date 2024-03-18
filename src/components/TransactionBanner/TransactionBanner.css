@@ -1,0 +1,41 @@
+.transaction {
+    font-family: var(--exp-font-family);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .header {
+        display: flex;
+        opacity: 0.8;
+        h5 {
+            width: 65%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+        }
+        a {
+            width: 35%;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            color: black;
+            cursor: pointer;
+        }
+    }
+    .amount {
+        display: flex;
+        justify-content: start;
+        color: black;
+        h3 {
+            font-weight: 600;
+        }
+    }
+    .symbol {
+        display: flex;
+        justify-content: end;
+        .currency {
+            width: 15%;
+            background-color: #dbe2f6;
+            border-radius: 5px;
+        }
+    }
+}
