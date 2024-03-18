@@ -51,6 +51,7 @@ const AddExpenseModal = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+
     const [input, setInput] = useState({
       title: '',
       amount: '',
@@ -58,24 +59,37 @@ const AddExpenseModal = () => {
       date: new Date(),
       payee: '',
       category: 1,
-      paymentType: 1,
-      description: ''
+      payment_type: 1,
+      description: '',
+      user_id: sessionStorage.getItem("id")
     });
 
 
     const inputHandler= (event)=> {
       setInput({...input,[event.target.name]:event.target.value});
-      console.log(input);
+      
     }
 
     const dateHandler = (event) => {
       if (event.$isDayjsObject) {
-        setInput({...input,['date']:event.$d});
+        setInput({...input,['date']:event.$d.toLocaleDateString()});
       }
     }
 
-    const addExpense = (event) =>{
+    const [headers, setHeaders] = useState(
+      {
+        "Authorization" : "Bearer " + sessionStorage.getItem("token")
+      }
+    )
+    const addExpense = () =>{
       console.log(input);
+      axios.post("http://localhost:8080/addExpense",input,{headers:headers}).then(
+              (response)=>{
+                 console.log(response);
+              }
+            ).catch((err)=> {
+              console.log(err);
+            })
     }
   
     const [categories, setCategories] = useState([]);
@@ -216,7 +230,11 @@ const AddExpenseModal = () => {
                         name='date' 
                         size='small'
                         value={dayjs(input.date)}
-                        onChange={dateHandler} 
+                        onChange={dateHandler}
+                        format="DD-MM-YYYY"
+                        disableFuture
+                        openTo="year"
+                        views={["year", "month", "day"]} 
                       />
                   </LocalizationProvider>
                   </Grid> 
@@ -268,8 +286,8 @@ const AddExpenseModal = () => {
                     sx={{ width: '100%' }}
                     size="small"
                     id="paymentType"
-                    name='paymentType'
-                    value={input.paymentType}
+                    name='payment_type'
+                    value={input.payment_type}
                     onChange={inputHandler}
                     select
                     SelectProps={{
