@@ -53,8 +53,8 @@ const AddExpenseModal = () => {
 
     const [input, setInput] = useState({
       title: '',
-      amount: 0.0,
-      gst: 0,
+      amount: '',
+      gst: '',
       date: new Date(),
       payee: '',
       category: 1,
@@ -62,9 +62,16 @@ const AddExpenseModal = () => {
       description: ''
     });
 
+
     const inputHandler= (event)=> {
       setInput({...input,[event.target.name]:event.target.value});
-  
+      console.log(input);
+    }
+
+    const dateHandler = (event) => {
+      if (event.$isDayjsObject) {
+        setInput({...input,['date']:event.$d});
+      }
     }
 
     const addExpense = (event) =>{
@@ -209,7 +216,7 @@ const AddExpenseModal = () => {
                         name='date' 
                         size='small'
                         value={dayjs(input.date)}
-                        onChange={inputHandler} 
+                        onChange={dateHandler} 
                       />
                   </LocalizationProvider>
                   </Grid> 
@@ -241,7 +248,6 @@ const AddExpenseModal = () => {
                     value={input.category}
                     onChange={inputHandler}
                     select
-                    defaultValue="Education"
                     SelectProps={{
                       native:'true'
                     }}
@@ -266,7 +272,6 @@ const AddExpenseModal = () => {
                     value={input.paymentType}
                     onChange={inputHandler}
                     select
-                    defaultValue="UPI Payment"
                     SelectProps={{
                       native:'true'
                     }}
