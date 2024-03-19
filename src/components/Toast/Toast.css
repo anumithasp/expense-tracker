@@ -7,4 +7,9 @@
 .exp-toast {
     --bs-toast-bg: var(--exp-primary-color);
     --bs-toast-color: white;
+    z-index: 3;
+}
+
+.toast-container {
+    --bs-toast-zindex: 5000;
 }
