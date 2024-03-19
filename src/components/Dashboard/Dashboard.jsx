@@ -2,6 +2,7 @@ import React from 'react'
 import LoginNav from '../LoginNav/LoginNav';
 import TransactionBanner from '../TransactionBanner/TransactionBanner';
 import LineGraph from '../LineGraph/LineGraph';
+import LogDetails from '../LogDetails/LogDetails';
 
 
 const Dashboard = () => {
@@ -13,8 +14,9 @@ const Dashboard = () => {
         <TransactionBanner />
         <TransactionBanner />
       </div>
-      <div className='d-flex justify-content-between'>
+      <div className='d-flex flex-direction-column justify-content-between'>
         <LineGraph />
+        <LogDetails />
       </div>
     </div>
   )

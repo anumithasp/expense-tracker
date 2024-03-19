@@ -8,20 +8,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
-import { MenuItem, alpha,styled } from '@mui/material';
+import { styled } from '@mui/material';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
 import axios from 'axios';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import './AddExpenseModal.css';
+import * as bootstrap from 'bootstrap';
+import Toast from '../Toast/Toast';
 
 const style = {
   position: 'absolute',
@@ -43,14 +41,18 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
   '& .MuiPaper-root': {
     maxWidth: '800px',
+    borderRadius: '10px'
   },
+  '& .MuiFormLabel-root, & .MuiInputBase-inputMultiline': {
+    fontFamily: 'Poppins'
+  }
 }));
 
 const AddExpenseModal = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    const [message, setMessage] = useState("");
 
     const [input, setInput] = useState({
       title: '',
@@ -64,14 +66,46 @@ const AddExpenseModal = () => {
       user_id: sessionStorage.getItem("id")
     });
 
+    const [isTitleValid, setIsTitleValid] = useState(true);
+    const [isAmountValid, setIsAmountValid] = useState(true);
+    const [isGstValid, setIsGstValid] = useState(true);
+    const [isPayeeValid, setIsPayeeValid] = useState(true);
 
     const inputHandler= (event)=> {
       setInput({...input,[event.target.name]:event.target.value});
-      
+      if(event.target.name === "title"){
+        if(event.target.value === ""){
+          setIsTitleValid(false);
+        } else {
+          setIsTitleValid(true);
+        }
+      }
+      if(event.target.name === "amount"){
+        if(event.target.value === ""){
+          setIsAmountValid(false);
+        } else {
+          setIsAmountValid(true);
+        }
+      }
+      if(event.target.name === "gst"){
+        if(event.target.value === ""){
+          setIsGstValid(false);
+        } else {
+          setIsGstValid(true);
+        }
+      }
+      if(event.target.name === "payee"){
+        if(event.target.value === ""){
+          setIsPayeeValid(false);
+        } else {
+          setIsPayeeValid(true);
+        }
+      }
     }
 
     const dateHandler = (event) => {
       if (event.$isDayjsObject) {
+        console.log(event.$d.toLocaleDateString());
         setInput({...input,['date']:event.$d.toLocaleDateString()});
       }
     }
@@ -81,17 +115,35 @@ const AddExpenseModal = () => {
         "Authorization" : "Bearer " + sessionStorage.getItem("token")
       }
     )
-    const addExpense = () =>{
+    const addExpense = (e) =>{
       console.log(input);
-      axios.post("http://localhost:8080/addExpense",input,{headers:headers}).then(
-              (response)=>{
-                 console.log(response);
+      e.preventDefault();
+      if(input.title === "" || input.amount === "" || input.gst === "" || input.payee === ""){
+        input.title === "" && setIsTitleValid(false);
+        input.amount === "" && setIsAmountValid(false);
+        input.gst === "" && setIsGstValid(false);
+        input.payee === "" && setIsPayeeValid(false);
+      } else {
+          axios.post("http://localhost:8080/addExpense",input,{headers:headers}).then(
+            (response)=>{
+              console.log(response);
+              if(response.status === 201){
+                setMessage("Expense added successfully!");
+                const toastLiveExample = document.getElementById('liveToast');
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+                toastBootstrap.show();
               }
-            ).catch((err)=> {
-              console.log(err);
-            })
+            }
+          ).catch((err)=> {
+            setMessage("Something went wrong!");
+            const toastLiveExample = document.getElementById('liveToast');
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show();
+          })
+        }  
     }
-  
+
+    
     const [categories, setCategories] = useState([]);
     const [paymentTypes, setPaymentTypes] = useState([]);
     useEffect(() => {
@@ -112,15 +164,13 @@ const AddExpenseModal = () => {
         console.log(err);
       })
     },[])
-
-
-
-    
+   
     return (
       <div >
         <a className="nav-link" href="#">
             <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Expense </button>
         </a>
+        <Toast  message={message} />
         <Modal
           open={open}
           onClose={handleClose}
@@ -133,7 +183,6 @@ const AddExpenseModal = () => {
             
           }}
         >
-          
             <React.Fragment> 
             <Box sx={style}>
               <BootstrapDialog
@@ -144,8 +193,9 @@ const AddExpenseModal = () => {
                 <DialogTitle 
                 sx={{ m: 0, p: 2, 
                   backgroundColor: "#014f86",
-                  color:'white',
-                  fontSize:'medium'
+                  color: 'white',
+                  fontSize: 'medium',
+                  fontFamily: 'Poppins'
                 }} 
                 id="customized-dialog-title">
                   Add New Expenses
@@ -165,51 +215,47 @@ const AddExpenseModal = () => {
                 <DialogContent sx={{fontSize:'small'}}>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                   <Grid item xs={12} sm={12} md={12}>
-                      <InputLabel  htmlFor="title">
-                      Title
-                      </InputLabel>
-                      <FormControl variant="standard">
                       <TextField
-                      size="small"
+                      error = {!isTitleValid}
+                      label="Title"
+                      required
+                      fullWidth
+                      size="medium"
                       id="title"
                       name='title'
                       value={input.title}
                       onChange={inputHandler}
-                      sx={{ width: '100%'}}
+                      sx={{ fontFamily: 'Poppins' }}
                       />
-                      </FormControl>
-                    </Grid>
+                  </Grid>
                   <Grid item xs={3} sm={4} md={4}>
-                    <InputLabel  htmlFor="amount">
-                     Amount
-                    </InputLabel>
-                    <FormControl variant="standard">
                     <TextField
-                    size="small"
+                    error = {!isAmountValid}
+                    label="Amount"
+                    fullWidth
+                    required
+                    size="medium"
                     id="amount"
                     name='amount'
                     type='number'
                     value={input.amount}
                     onChange={inputHandler}
                     placeholder="0.0"  
-                    InputProps={{
+                    InputProps={ input.amount != '' &&  {
                       startAdornment: <CurrencyRupeeIcon sx={{fontSize:'medium'}}/>
                     }}
-                    sx={{ width: '100%'}}
                     />
-                    </FormControl>
                   </Grid>
-
                   <Grid item xs={3} sm={4} md={4}>
-                    <InputLabel  htmlFor="gst">
-                      GST Rate
-                    </InputLabel>
                     <TextField
+                    error = {!isGstValid}
                     id="gst"
+                    label="GST Rate"
+                    fullWidth
+                    required
                     type='number'
-                    size="small"
+                    size="medium"
                     name='gst'
-                    sx={{ width: '100%'}}
                     value={input.gst}
                     onChange={inputHandler}
                     placeholder="0%"
@@ -217,37 +263,33 @@ const AddExpenseModal = () => {
                       endAdornment: '%'
                     }}
                     >
-                  
                     </TextField> 
                   </Grid>
-
                   <Grid item xs={3} sm={4} md={4}>
-                  <InputLabel htmlFor="date">
-                    Date
-                  </InputLabel>
-                  <LocalizationProvider sx={{ maxWidth: '100%' }} dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider required dateAdapter={AdapterDayjs}>
                       <DatePicker className='expense-date'
+                        label="Date of Purchase"
+                        fullWidth
+                        required
                         name='date' 
-                        size='small'
+                        size='medium'
                         value={dayjs(input.date)}
                         onChange={dateHandler}
-                        format="DD-MM-YYYY"
+                        inputFormat="dd-MMM-yyyy"
                         disableFuture
                         openTo="year"
                         views={["year", "month", "day"]} 
                       />
                   </LocalizationProvider>
-                  </Grid> 
-
-                  
-
+                  </Grid>  
                   <Grid item xs={4} sm={6} md={4}>
-                    <InputLabel  htmlFor="payee">
-                      Payee
-                    </InputLabel>
                     <TextField
+                    error = {!isPayeeValid}
+                    label="Payee"
+                    fullWidth
+                    required
                     sx={{ width: '100%'}}
-                    size="small"
+                    size="medium"
                     id="payee"
                     name='payee'
                     value={input.payee}
@@ -255,12 +297,11 @@ const AddExpenseModal = () => {
                     />
                   </Grid>
                   <Grid item xs={4} sm={6} md={4}>
-                    <InputLabel  htmlFor="category">
-                      Category
-                    </InputLabel>
                     <TextField
-                    sx={{ width: '100%' }}
-                    size="small"
+                    label="Category"
+                    fullWidth
+                    required
+                    size="medium"
                     id="category"
                     name='category'
                     value={input.category}
@@ -277,14 +318,13 @@ const AddExpenseModal = () => {
                       ))}
                     </TextField>
                   </Grid>
-
-                  <Grid sx={{ width: '30%' }} item xs={4} sm={6} md={4}>
-                    <InputLabel  htmlFor="paymentType">
-                      Payment Type
-                    </InputLabel>
+                  <Grid item xs={4} sm={6} md={4}>
                     <TextField
+                    label="Payment Type"
+                    fullWidth
+                    required
                     sx={{ width: '100%' }}
-                    size="small"
+                    size="medium"
                     id="paymentType"
                     name='payment_type'
                     value={input.payment_type}
@@ -301,14 +341,11 @@ const AddExpenseModal = () => {
                       ))}
                     </TextField>
                   </Grid>
-
                   <Grid item xs={12} sm={12} md={12}>
-                    <InputLabel  htmlFor="description">
-                      Description
-                    </InputLabel>
                     <TextField
-                    name='description'
+                    label="Description"
                     fullWidth
+                    name='description'
                     multiline
                     rows={2}
                     id="description"
@@ -321,7 +358,7 @@ const AddExpenseModal = () => {
                 </Grid>
                 
                 <DialogActions>
-                   <Button autoFocus variant="contained" size='medium' style={{backgroundColor: "#014f86"}} onClick={addExpense}>
+                   <Button autoFocus variant="contained" size='medium' type='submit' style={{backgroundColor: "#014f86"}} onClick={addExpense}>
                     Update
                    </Button>
                 </DialogActions>
@@ -329,7 +366,6 @@ const AddExpenseModal = () => {
               </BootstrapDialog>
               </Box>
             </React.Fragment>
-          
         </Modal>
       </div>
     );
