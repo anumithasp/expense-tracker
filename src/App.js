@@ -22,14 +22,18 @@ import "@fontsource/poppins/900.css";
 import "@fontsource/poppins/900-italic.css";
 import SignUp from './components/SignUp/SignUp';
 import Dashboard from './components/Dashboard/Dashboard';
+import SignIn from './components/SignIn/SignIn';
+import Forgot from './components/Forgot/Forgot';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path= '/' element = {<LandingPage />}></Route>
+        <Route path= '/login' element={<SignIn />}></Route>
         <Route path='/signup' element ={<SignUp/>}></Route>
         <Route path='/dashboard'element={<Dashboard />}></Route>
+        <Route path='/forgot'element={<Forgot />}></Route>
       </Routes>
     </div>
   );

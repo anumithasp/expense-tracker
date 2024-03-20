@@ -24,7 +24,7 @@ const LandingNav = () => {
                             <a className="nav-link exp-link" href="#customer-care">Customer Care</a>
                         </li>
                         <li className="nav-item pl-pr-15">
-                            <a className="nav-link" href="#">
+                            <a className="nav-link" href="/login">
                                 <button className='btn btn-outline-primary exp-btn-outline'>Sign In</button>
                             </a>
                         </li>
