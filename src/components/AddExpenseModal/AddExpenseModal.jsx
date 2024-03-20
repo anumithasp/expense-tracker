@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
-import { styled } from '@mui/material';
+import { styled, Alert } from '@mui/material';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -18,7 +18,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import './AddExpenseModal.css';
-import * as bootstrap from 'bootstrap';
 import Toast from '../Toast/Toast';
 
 const style = {
@@ -52,7 +51,7 @@ const AddExpenseModal = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [message, setMessage] = useState("");
+    const [alert, setAlert] = useState("");
 
     const [input, setInput] = useState({
       title: '',
@@ -105,8 +104,8 @@ const AddExpenseModal = () => {
 
     const dateHandler = (event) => {
       if (event.$isDayjsObject) {
-        console.log(event.$d.toLocaleDateString());
-        setInput({...input,['date']:event.$d.toLocaleDateString()});
+        console.log(new Date(event.$d));
+        setInput({...input,['date']:new Date(event.$d)});
       }
     }
 
@@ -128,17 +127,28 @@ const AddExpenseModal = () => {
             (response)=>{
               console.log(response);
               if(response.status === 201){
-                setMessage("Expense added successfully!");
-                const toastLiveExample = document.getElementById('liveToast');
-                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-                toastBootstrap.show();
+                setAlert("Expense added successfully!");
+                setTimeout(() => {
+                  setAlert("");
+                  setInput({
+                    title: '',
+                    amount: '',
+                    gst: '',
+                    date: new Date(),
+                    payee: '',
+                    category: 1,
+                    payment_type: 1,
+                    description: '',
+                    user_id: sessionStorage.getItem("id")
+                  });
+                }, 3000);
               }
             }
           ).catch((err)=> {
-            setMessage("Something went wrong!");
-            const toastLiveExample = document.getElementById('liveToast');
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            toastBootstrap.show();
+            setAlert("Something went wrong!");
+            setTimeout(() => {
+              setAlert("");
+            }, 3000);
           })
         }  
     }
@@ -170,7 +180,6 @@ const AddExpenseModal = () => {
         <a className="nav-link" href="#">
             <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Expense </button>
         </a>
-        <Toast  message={message} />
         <Modal
           open={open}
           onClose={handleClose}
@@ -275,7 +284,7 @@ const AddExpenseModal = () => {
                         size='medium'
                         value={dayjs(input.date)}
                         onChange={dateHandler}
-                        inputFormat="dd-MMM-yyyy"
+                        format="YYYY-MM-DD"
                         disableFuture
                         openTo="year"
                         views={["year", "month", "day"]} 
@@ -358,8 +367,16 @@ const AddExpenseModal = () => {
                 </Grid>
                 
                 <DialogActions>
+                  {alert.includes('success') &&
+                    <Alert sx={{ padding: '0px 16px' }} variant="outlined" severity="success">
+                    {alert}
+                  </Alert>}
+                  {alert && !alert.includes('success') &&
+                  <Alert sx={{ padding: '0px 16px' }} variant="outlined" severity="error">
+                    {alert}
+                  </Alert>}
                    <Button autoFocus variant="contained" size='medium' type='submit' style={{backgroundColor: "#014f86"}} onClick={addExpense}>
-                    Update
+                    Add
                    </Button>
                 </DialogActions>
                 </DialogContent>
