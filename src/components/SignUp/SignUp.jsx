@@ -155,7 +155,7 @@ const SignUp = () => {
         (!input.checkedCode && input.uniqueCode === "") && setIsUniqueCodeValid(false);
       } else {
         if (isNameValid && isEmailValid && !isEmailExist && isPasswordValid){
-          if (!input.checkedCode && isUniqueCodeValid) {
+          if ((!input.checkedCode && isUniqueCodeValid)) {
             axios.post("http://localhost:8080/signup",input).then(
               (response)=>{
                   console.log(response.data);
