@@ -108,7 +108,7 @@ const SignIn = () => {
       } else {
         if (isEmailValid && !isEmailExist && isPasswordValid){
           
-            axios.post("http://localhost:8080/signup",input).then(
+            axios.post("http://localhost:8080/login",input).then(
               (response)=>{
                   console.log(response.data);
                   if (response.data.status === "success"){
