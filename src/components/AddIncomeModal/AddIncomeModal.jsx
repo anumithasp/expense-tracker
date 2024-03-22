@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,7 +11,8 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
-import { styled } from '@mui/material';
+import { styled, Alert } from '@mui/material';
+import axios from 'axios';
 
 const style = {
   position: 'absolute',
@@ -46,28 +47,98 @@ const AddIncomeModal = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const paymentTypes = [
-      'UPI',
-      'Cash',
-      'Card'
-    ];
+    const [alert, setAlert] = useState("");
 
     const [input, setInput] = useState({
       title: '',
       amount: '',
       payer: '',
       payment_type: 1,
-      description: ''
-    })
+      description: '',
+      user_id: sessionStorage.getItem("id")
+    });
+
+    const [isTitleValid, setIsTitleValid] = useState(true);
+    const [isAmountValid, setIsAmountValid] = useState(true);
+    const [isPayerValid, setIsPayerValid] = useState(true);
 
     const inputHandler = (event) => {
       setInput({...input,[event.target.name]:event.target.value});
-    }
+      if(event.target.name === "title"){
+        if(event.target.value === ""){
+          setIsTitleValid(false);
+        } else {
+          setIsTitleValid(true);
+        }
+      }
+      if(event.target.name === "amount"){
+        if(event.target.value === ""){
+          setIsAmountValid(false);
+        } else {
+          setIsAmountValid(true)
+        }
+      }
+      if(event.target.name === "payer"){
+        if(event.target.value === ""){
+          setIsPayerValid(false);
+        } else {
+          setIsPayerValid(true);
+        }
+      }
+    };
+
+    const [headers, setHeaders] = useState(
+      {
+        "Authorization" : "Bearer " + sessionStorage.getItem("token")
+      }
+    )
 
     const addIncome = (e) =>{
-      console.log(input)
+      console.log(input);
+      e.preventDefault();
+      if(input.title === "" || input.amount === "" || input.payer === ""){
+        input.title === "" && setIsTitleValid(false);
+        input.amount === "" && setIsAmountValid(false);
+        input.payer === "" && setIsPayerValid(false);
+      } else {
+        axios.post("http://localhost:8080/addIncome",input,{headers:headers}).then(
+          (response)=>{
+            console.log(response);
+            if(response.status === 201){
+              setAlert("Income added successfully!");
+              setTimeout(() => {
+                setAlert("");
+                setInput({
+                  title: '',
+                  amount: '',
+                  payer: '',
+                  payment_type: 1,
+                  description: '',
+                  user_id: sessionStorage.getItem("id")
+                });
+              },3000)
+            }
+          }
+        ).catch((err)=>{
+          setAlert("Somthing went wrong!");
+          setTimeout(()=>{
+            setAlert("");
+          },3000)
+        })
+      }
     };
+
+    const [paymentTypes, setPaymentTypes] = useState([]);
+    useEffect(()=>{
+      axios.get("http://localhost:8080/paymentTypes").then(
+        (response) => {
+          console.log(response.data);
+          setPaymentTypes(response.data.paymentTypes);
+        }
+      ).catch((err)=>{
+        console.log(err);
+      })
+    },[]);
   
     return (
       <div>
@@ -115,6 +186,7 @@ const AddIncomeModal = () => {
                     <TextField
                     fullWidth
                     required
+                    error={!isTitleValid}
                     label="Title"
                     size="medium"
                     id="title"
@@ -126,9 +198,10 @@ const AddIncomeModal = () => {
                   </Grid>
                   <Grid item xs={3} sm={4} md={4}>
                     <TextField
-                    label="Amount"
                     fullWidth
                     required
+                    error={!isAmountValid}
+                    label="Amount"
                     size="medium"
                     id="amount"
                     name='amount'
@@ -143,9 +216,10 @@ const AddIncomeModal = () => {
                   </Grid>
                   <Grid item xs={3} sm={4} md={4}>
                     <TextField
-                    label="Payer"
                     fullWidth
                     required
+                    error={!isPayerValid}
+                    label="Payer"
                     size="medium"
                     id="payer"
                     name='payer'
@@ -170,8 +244,8 @@ const AddIncomeModal = () => {
                     }}
                     >
                       {paymentTypes.map((paymentType) =>(
-                        <option key={paymentType} value={paymentType}>
-                          {paymentType}
+                        <option key={paymentType.id} value={paymentType.id}>
+                          {paymentType.type}
                         </option>
                       ))}
                     </TextField>
@@ -193,6 +267,14 @@ const AddIncomeModal = () => {
 
                 </Grid>
                 <DialogActions>
+                  {alert.includes('success') &&
+                    <Alert sx={{ padding: '0px 16px' }} variant="outlined" severity="success">
+                    {alert}
+                  </Alert>}
+                  {alert && !alert.includes('success') &&
+                  <Alert sx={{ padding: '0px 16px' }} variant="outlined" severity="error">
+                    {alert}
+                  </Alert>}
                   <Button autoFocus variant="contained" size='large' type='submit' style={{backgroundColor: "#014f86", fontSize:'medium', fontFamily: 'Poppins' }} onClick={addIncome}>
                     Add
                   </Button>
