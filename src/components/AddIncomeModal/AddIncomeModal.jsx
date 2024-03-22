@@ -57,7 +57,7 @@ const AddIncomeModal = () => {
       title: '',
       amount: '',
       payer: '',
-      payment_type: '',
+      payment_type: 1,
       description: ''
     })
 
