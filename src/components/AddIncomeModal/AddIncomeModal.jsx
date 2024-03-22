@@ -209,9 +209,9 @@ const AddIncomeModal = () => {
                     placeholder="0.0"  
                     value={input.amount}
                     onChange={inputHandler}
-                    InputProps={ {
+                    InputProps={ input.amount != '' &&  {
                       startAdornment: <CurrencyRupeeIcon sx={{fontSize:'medium'}}/>
-                    }}
+                    }}  
                     />
                   </Grid>
                   <Grid item xs={3} sm={4} md={4}>

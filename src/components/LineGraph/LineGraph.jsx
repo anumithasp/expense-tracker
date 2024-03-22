@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart } from '@mui/x-charts';
+import { LineChart, axisClasses } from '@mui/x-charts';
 import { Paper, Box } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
@@ -17,6 +17,22 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
+
+const chartSetting = {
+  yAxis: [
+    {
+      label: 'transactions (INR)',
+    },
+  ],
+  width: 875,
+  height: 425,
+  sx: {
+    [`.${axisClasses.left} .${axisClasses.label}`]: {
+      transform: 'translate(-20px, 0)',
+    },
+    paddingLeft: '50px'
+  },
+};
 
 const transactionData = [
     {
@@ -81,6 +97,12 @@ const LineGraph = () => {
               </div>
             </div>
             <LineChart
+                margin={{ left: 60 }}
+                yAxis= {[
+                  {
+                    label: 'transactions (INR)',
+                  }
+                ]}
                 xAxis={[
                     {
                       scaleType: 'band',
@@ -89,12 +111,11 @@ const LineGraph = () => {
                     },
                   ]}
                 series={[
-                    { curve: "linear", data: incomes },
-                    { curve: "linear", data: expenses },
-                    { curve: "linear", data: balances }
+                    { curve: "linear", data: incomes, label: "Income" },
+                    { curve: "linear", data: expenses, label: "Expense" },
+                    { curve: "linear", data: balances, label: "Balance" }
                 ]}
-                width={875}
-                height={400}
+                {...chartSetting}
                 dataset={transactionData}
             />
           </Item>

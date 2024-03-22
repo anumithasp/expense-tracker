@@ -31,10 +31,9 @@
     }
     .symbol {
         display: flex;
-        justify-content: end;
-        .currency {
+        justify-content: space-between;
+        .icon {
             width: 15%;
-            background-color: #dbe2f6;
             border-radius: 5px;
         }
     }
