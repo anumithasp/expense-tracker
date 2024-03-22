@@ -8,8 +8,12 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 500,
-    width : 950,
-    lineHeight: '60px'
+    width : 875,
+    lineHeight: '60px',
+    '& .css-k69abp-MuiResponsiveChart-container': {
+      paddingLeft: '50px'
+    },
+    fontFamily: 'Poppins'
   }));
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
@@ -71,6 +75,11 @@ const LineGraph = () => {
         }}
         >
           <Item key={1} elevation={1}>
+            <div className='header'>
+              <div className='heading px-3'>
+                  <h5>Cash Flow</h5>
+              </div>
+            </div>
             <LineChart
                 xAxis={[
                     {
@@ -84,8 +93,8 @@ const LineGraph = () => {
                     { curve: "linear", data: expenses },
                     { curve: "linear", data: balances }
                 ]}
-                width={900}
-                height={500}
+                width={875}
+                height={400}
                 dataset={transactionData}
             />
           </Item>
