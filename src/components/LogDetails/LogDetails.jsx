@@ -3,7 +3,9 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import './LogDetails.css';
-import { CircularProgress, Divider, Grid, List, ListItem, ListItemText } from '@mui/material';
+import { LinearProgress, Divider, Grid, List, ListItem, ListItemText } from '@mui/material';
+import { ShoppingCart, Fastfood, School, Houseboat, ShoppingBag, 
+        EmojiTransportation, MonitorHeart, CardGiftcard, MiscellaneousServices } from '@mui/icons-material';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -15,6 +17,14 @@ const Item = styled(Paper)(({ theme }) => ({
     fontFamily: 'Poppins',
     '& .MuiTypography-root': {
         fontFamily: 'Poppins'
+    },
+    '& .MuiListItemText-root': {
+        paddingLeft: '10px'
+    },
+    '& .MuiLinearProgress-root': {
+        width: '200px',
+        height: '10px',
+        borderRadius: 5
     }
   }));
 
@@ -24,38 +34,47 @@ const dataSet = [
     {
         name: "Shopping",
         amount: 3000,
+        icon: <ShoppingCart fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Food",
         amount: 1500,
+        icon: <Fastfood fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Education",
         amount: 4000,
+        icon: <School fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Vacation",
         amount: 10000,
+        icon: <Houseboat fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Grocery",
         amount: 3000,
+        icon: <ShoppingBag fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Transportation",
         amount: 1000,
+        icon: <EmojiTransportation fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Insurance",
         amount: 2250,
+        icon: <MonitorHeart fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Gifts",
         amount: 500,
+        icon: <CardGiftcard fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Others",
         amount: 750,
+        icon: <MiscellaneousServices fontSize='small' sx={{ color: "#014f86" }} />
     }
 ];
 
@@ -83,13 +102,12 @@ const LogDetails = () => {
                         <List>
                         {dataSet.map((category) => (
                             <div>
-                                <ListItem
-                                    secondaryAction={category.amount}
-                                    >
-                                    <CircularProgress sx={{ padding: '5px' }} size="2rem" variant="determinate" value={100} />
+                                <ListItem>
+                                    {category.icon}
                                     <ListItemText
                                         primary={category.name}
                                     />
+                                    <LinearProgress title={category.amount} variant="determinate" value={category.amount/15000*100} />
                                 </ListItem>
                                 <Divider variant="middle" component="li" />
                             </div>

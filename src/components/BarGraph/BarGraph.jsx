@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart, axisClasses } from '@mui/x-charts';
 import { Box, Paper, ThemeProvider, createTheme, styled } from '@mui/material';
-
+import './BarGraph.css';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -21,7 +21,7 @@ const chartSetting = {
     },
   ],
   width: 800,
-  height: 400,
+  height: 350,
   sx: {
     [`.${axisClasses.left} .${axisClasses.label}`]: {
       transform: 'translate(-20px, 0)',
@@ -96,7 +96,7 @@ const valueFormatter = (value) => `${value} INR`;
 
 const BarGraph = () => {
   return (
-    <div>
+    <div className='bar-graph'>
       <ThemeProvider theme={lightTheme}>
         <Box
         sx={{
@@ -108,9 +108,15 @@ const BarGraph = () => {
         }}
         >
           <Item key={1} elevation={1}>
+            <div className='header'>
+              <div className='heading px-3'>
+                  <h5>Income vs Expense</h5>
+              </div>
+            </div>
             <BarChart className='bar-chart'
+              margin={{ left: 60 }}
               dataset={dataset}
-              xAxis={[{ scaleType: 'band', dataKey: 'month' }]}
+              xAxis={[{ scaleType: 'band', dataKey: 'month', label: "Month" }]}
               series={[
                 { dataKey: 'income', label: 'Income', valueFormatter },
                 { dataKey: 'expense', label: 'Expense', valueFormatter },
