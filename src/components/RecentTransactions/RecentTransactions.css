@@ -1,0 +1,7 @@
+.recent-transactions {
+    .header {
+        .heading {
+            font-family: var(--exp-font-family);
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './SignUp.css';
-import { Box, Grid, TextField, Button, FormHelperText } from '@mui/material';
+import { Box, Grid, TextField, Button, FormHelperText, Alert } from '@mui/material';
 import Form from 'react-bootstrap/Form'
 import { Copyright, ContentCopy } from '@mui/icons-material';
 import axios from 'axios';
@@ -18,6 +18,7 @@ const SignUp = () => {
     const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(true);
     const [isEmailExist, setIsEmailExist] = useState(false);
     const [isCodeExist, setIsCodeExist] = useState(true);
+    const [alert, setAlert] = useState("");
     const navigate = useNavigate();
 
     const[input, setInput] = new useState(
@@ -100,7 +101,6 @@ const SignUp = () => {
       }
     }
 
-
     const [showButton, setShowButton] = useState(false);
 
     const handleCheck = (e) => {
@@ -126,10 +126,10 @@ const SignUp = () => {
     const copyToClipboard = () => {
       navigator.clipboard.writeText(input.uniqueCode).then(
         function(){
-          const toastLiveExample = document.getElementById('liveToast');
-          const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-          toastBootstrap.show();
-          // Hide message after 2 seconds
+          setAlert("Code copied to clipboard!");
+            setTimeout(() => {
+              setAlert("");
+            }, 3000);
         })
       .catch(
          function(err) {
@@ -163,9 +163,7 @@ const SignUp = () => {
                     sessionStorage.setItem("id", response.data.id);
                     sessionStorage.setItem("token", response.data.token);
                     navigate("/dashboard");
-                  } else {
-                    alert("Invalid credentials");
-                  }  
+                  }
               }
             ).catch((err)=> {
               console.log(err);
@@ -266,6 +264,10 @@ const SignUp = () => {
                 {input.uniqueCode}
               </Button>}
               {showCode && <FormHelperText>Click to copy and share the code with family members when they sign-up.</FormHelperText>}
+              {alert.includes('copied') &&
+                <Alert sx={{ padding: '0px 16px', margin: '10px 0px' }} variant="outlined" severity="success">
+                {alert}
+              </Alert>}
               <div className="input-group">
                   <Form.Check className='checkbox'
                     name='checkedCode'

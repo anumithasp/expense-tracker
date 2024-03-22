@@ -3,15 +3,19 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import './LogDetails.css';
-import { CircularProgress, Divider, Grid, IconButton, LinearProgress, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { CircularProgress, Divider, Grid, List, ListItem, ListItemText } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 500,
-    width : 450,
-    lineHeight: '60px'
+    width : 425,
+    lineHeight: '60px',
+    fontFamily: 'Poppins',
+    '& .MuiTypography-root': {
+        fontFamily: 'Poppins'
+    }
   }));
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
@@ -70,9 +74,9 @@ const LogDetails = () => {
             }}
             >
                 <Item key={1} elevation={1}>
-                    <div className='transaction'>
-                        <div className='transaction-details px-3'>
-                            <h5>Latest Transactions</h5>
+                    <div className='header'>
+                        <div className='heading px-3'>
+                            <h5>Categorical Expenses</h5>
                         </div>
                     </div>
                     <Grid item xs={12} md={6}>
@@ -86,7 +90,6 @@ const LogDetails = () => {
                                     <ListItemText
                                         primary={category.name}
                                     />
-                                    <LinearProgress color="primary" variant="buffer" value={50} />
                                 </ListItem>
                                 <Divider variant="middle" component="li" />
                             </div>

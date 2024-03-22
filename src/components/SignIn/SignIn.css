@@ -1,4 +1,4 @@
-.sign-up {
+.sign-in {
     padding: 30px 250px;
     background-color: #dbe2f6;
     height: 100%;
@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    .sign-up-wrapper {
+    .sign-in-wrapper {
         height: 650px;
         padding: 20px;
         background-color: white;
@@ -14,6 +14,15 @@
         box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
         .wrapper-main {
             height: 86vh;
+        }
+        .signin-title{
+            text-align: left;
+            h3{
+                color: var(--exp-primary-color);
+            }
+            h6{
+                color: rgb(84, 78, 78);
+            }
         }
         .checkbox {
             input {
@@ -24,12 +33,19 @@
                 color: var(--exp-primary-color);
             }
         }
-        .signup-button{
+        .forgot{
+            text-align: end;
+            a{
+                text-decoration: none;
+                color: var(--exp-primary-color);
+            }
+        }
+        .signin-button{
             &:hover {
                 background-color: var(--exp-primary-color);
             }
         }
-        .login {
+        .signup {
             h5 {
                 opacity: 0.8;
                 font-size:medium;
@@ -40,7 +56,7 @@
             }
         }
     }
-    .signup-field {
+    .signin-field {
         &::focus {
             color: #014f86;
         }
@@ -54,7 +70,7 @@
             background-color: var(--exp-primary-color);
         }
     }
-    .sign-up-img-content {
+    .sign-in-img-content {
         display: flex;
         flex-direction: column;
         color: white;

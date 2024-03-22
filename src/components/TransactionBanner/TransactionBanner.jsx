@@ -10,7 +10,7 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 175,
-    width : 450,
+    width : 400,
     lineHeight: '60px'
   }));
 

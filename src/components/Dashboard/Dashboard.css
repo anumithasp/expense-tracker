@@ -1,0 +1,14 @@
+.exp-dashboard {
+    font-family: var(--exp-font-family) !important;
+    .content {
+        margin: 0px 50px;
+    }
+    .header {
+        .heading {
+            h5{
+                padding-top: 10px;
+                text-align: left;
+            }
+        }
+    }
+}

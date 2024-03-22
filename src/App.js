@@ -23,7 +23,7 @@ import "@fontsource/poppins/900-italic.css";
 import SignUp from './components/SignUp/SignUp';
 import Dashboard from './components/Dashboard/Dashboard';
 import SignIn from './components/SignIn/SignIn';
-import Forgot from './components/Forgot/Forgot';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
         <Route path= '/login' element={<SignIn />}></Route>
         <Route path='/signup' element ={<SignUp/>}></Route>
         <Route path='/dashboard'element={<Dashboard />}></Route>
-        <Route path='/forgot'element={<Forgot />}></Route>
+        <Route path='/forgotpassword'element={<ForgotPassword />}></Route>
       </Routes>
     </div>
   );
