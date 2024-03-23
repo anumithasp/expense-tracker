@@ -198,7 +198,7 @@ const SignUp = () => {
             }}
           >
             <h3 style={{ textAlign: 'left', color: '#014f86'}}>Welcome!</h3>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+            <Box className='box-signup-form' component="form" noValidate sx={{ mt: 1 }}>
               <TextField className='signup-field'
                 error={!isNameValid}
                 margin="normal"
