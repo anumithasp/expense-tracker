@@ -24,6 +24,7 @@ import SignUp from './components/SignUp/SignUp';
 import Dashboard from './components/Dashboard/Dashboard';
 import SignIn from './components/SignIn/SignIn';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import Insights from './components/Insights/Insights';
 
 export function formatNum(number) {
   var decPlaces = 2;
@@ -62,7 +63,7 @@ export function formatNum(number) {
   return number;
 }
 
-import Insights from './components/Insights/Insights';
+
 
 function App() {
   return (
