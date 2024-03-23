@@ -2,7 +2,7 @@
     padding: 30px 250px;
     background-color: #dbe2f6;
     height: 100%;
-    font-family: var(--exp-font-family);
+    font-family: var(--exp-font-family) !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,6 +97,11 @@
         .copyright {
             opacity: 0.5;
         }
+    }
+    .box-login-form {
+        &.MuiFormLabel-root, &.MuiInputBase-inputMultiline {
+            fontFamily: 'Poppins'
+          }
     }
 }
 

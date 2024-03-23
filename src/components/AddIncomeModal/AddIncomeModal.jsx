@@ -120,7 +120,7 @@ const AddIncomeModal = () => {
             }
           }
         ).catch((err)=>{
-          setAlert("Somthing went wrong!");
+          setAlert("Something went wrong!");
           setTimeout(()=>{
             setAlert("");
           },3000)
@@ -132,7 +132,6 @@ const AddIncomeModal = () => {
     useEffect(()=>{
       axios.get("http://localhost:8080/paymentTypes").then(
         (response) => {
-          console.log(response.data);
           setPaymentTypes(response.data.paymentTypes);
         }
       ).catch((err)=>{
