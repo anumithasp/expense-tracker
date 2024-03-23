@@ -44,8 +44,10 @@ const SignIn = () => {
       (response)=>{
           console.log(response.data);
           if (response.data.status === "success"){
-            sessionStorage.setItem("id", response.data.id);
+            sessionStorage.setItem("id", response.data.userId);
             sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("name", response.data.name);
+            sessionStorage.setItem("isAdmin", response.data.isAdmin);
             navigate("/dashboard");
           } else {
             setAlert("Invalid credentials!");
@@ -56,6 +58,10 @@ const SignIn = () => {
       }
     ).catch((err)=> {
       console.log(err);
+      setAlert(err.message);
+            setTimeout(() => {
+              setAlert("");
+            }, 3000);
     })
   }
 

@@ -134,6 +134,10 @@ const SignUp = () => {
       .catch(
          function(err) {
             console.log(err);
+            setAlert(err.message);
+            setTimeout(() => {
+              setAlert("");
+            }, 3000);
       });
     };
 
@@ -162,12 +166,18 @@ const SignUp = () => {
                   if (response.data.status === "success"){
                     sessionStorage.setItem("id", response.data.id);
                     sessionStorage.setItem("token", response.data.token);
+                    sessionStorage.setItem("name", response.data.name);
+                    sessionStorage.setItem("isAdmin", response.data.isAdmin);
                     navigate("/dashboard");
                   }
               }
             ).catch((err)=> {
               console.log(err);
-            })
+              setAlert(err.message);
+              setTimeout(() => {
+                setAlert("");
+              }, 3000);
+              })
           }
         }
       }
