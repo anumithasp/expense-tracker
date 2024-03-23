@@ -29,7 +29,7 @@ const LoginNav = () => {
                         </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Profile
+                                {sessionStorage.getItem("name")} {sessionStorage.getItem("isAdmin") == "true" && "(Admin)"}
                             </a>
                             <ul className="dropdown-menu">
                                 <li><a className="dropdown-item" href="#">Action</a></li>
