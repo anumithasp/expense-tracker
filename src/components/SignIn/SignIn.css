@@ -1,19 +1,19 @@
 .sign-in {
     padding: 30px 250px;
     background-color: #dbe2f6;
-    height: 100%;
+    height: 100vh;
     font-family: var(--exp-font-family) !important;
     display: flex;
     justify-content: center;
     align-items: center;
     .sign-in-wrapper {
-        height: 650px;
+        height: 90vh;
         padding: 20px;
         background-color: white;
         border-radius: 10px;
         box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
         .wrapper-main {
-            height: 86vh;
+            height: 100%;
         }
         .signin-title{
             text-align: left;
@@ -109,22 +109,22 @@
     .sign-up-wrapper {
         height: 600px;
     }
-    .sign-up-img {
+    .sign-in-img {
         display: none !important;
     }
-    .sign-up-input {
+    .sign-in-input {
         max-width: 100% !important;
         flex-basis: 100% !important;
     }
 }
 
 @media (max-width: 768px) {
-    .sign-up {
+    .sign-in {
         padding: 30px 100px;
     }
 }
 @media (max-width: 426px) {
-    .sign-up {
+    .sign-in {
         padding: 30px 30px;
     }
 }
