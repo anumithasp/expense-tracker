@@ -99,8 +99,8 @@
         }
     }
     .box-login-form {
-        &.MuiFormLabel-root, &.MuiInputBase-inputMultiline {
-            fontFamily: 'Poppins'
+        .MuiFormLabel-root, .MuiInputBase-inputMultiline {
+            font-family: 'Poppins'
           }
     }
 }
