@@ -24,6 +24,7 @@ import SignUp from './components/SignUp/SignUp';
 import Dashboard from './components/Dashboard/Dashboard';
 import SignIn from './components/SignIn/SignIn';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import Insights from './components/Insights/Insights';
 
 export function formatNum(number) {
   var decPlaces = 2;
@@ -62,6 +63,8 @@ export function formatNum(number) {
   return number;
 }
 
+
+
 function App() {
   return (
     <div className="App">
@@ -70,6 +73,7 @@ function App() {
         <Route path= '/login' element={<SignIn />}></Route>
         <Route path='/signup' element ={<SignUp/>}></Route>
         <Route path='/dashboard'element={<Dashboard />}></Route>
+        <Route path='/insights'element={<Insights />}></Route>
         <Route path='/forgotpassword'element={<ForgotPassword />}></Route>
       </Routes>
     </div>
