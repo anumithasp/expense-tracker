@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: center;
     .sign-up-wrapper {
-        height: 90vh;
+        height: 85vh;
         padding: 20px;
         background-color: white;
         border-radius: 10px;
@@ -81,6 +81,9 @@
         .copyright {
             opacity: 0.5;
         }
+    }
+    .sign-up-input {
+        height: 100%;
     }
 }
 

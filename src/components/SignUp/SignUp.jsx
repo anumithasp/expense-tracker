@@ -191,7 +191,6 @@ const SignUp = () => {
         <Grid className='sign-up-input' item xs={12} sm={8} md={6}>
           <Box
             sx={{
-              my: 4,
               mx: 2,
               display: 'flex',
               flexDirection: 'column',
@@ -296,11 +295,11 @@ const SignUp = () => {
               >
                 Register
               </Button>
+              <div className='login'>
+                <h5>Already have an account? <a href="/login">Login</a></h5>
+              </div> 
             </Box>
           </Box>
-          <div className='login'>
-              <h5>Already have an account? <a href="/login">Login</a></h5>
-          </div> 
         </Grid>
         <Grid className='sign-up-img'
           item
