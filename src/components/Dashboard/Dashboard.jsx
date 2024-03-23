@@ -14,7 +14,7 @@ const Dashboard = () => {
       <LoginNav />
       <div className='content'>
         <div className='d-flex justify-content-between'>
-          <TransactionBanner title="REMAINING BALANCE" amount={formatNum(29500)} />
+          <TransactionBanner title="BALANCE" amount={formatNum(29500)} />
           <TransactionBanner title="INCOME" amount={formatNum(75000)}/>
           <TransactionBanner title="EXPENSE" amount={formatNum(45500)}/>
         </div>

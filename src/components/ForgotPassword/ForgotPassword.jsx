@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, IconButton, Paper, styled, Grid } from '@mui/material';
+import { TextField, Button, IconButton, Paper, styled, Grid, Alert } from '@mui/material';
 import axios from 'axios';
 import './ForgotPassword.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -14,20 +14,23 @@ const ForgotPassword = () => {
     width : 700,
     lineHeight: '60px',
     fontFamily: 'Poppins',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    '& .MuiPaper-root, & .MuiButtonBase-root, & .MuiFormLabel-root, & .MuiInputBase-inputMultiline': {
+      fontFamily: 'Poppins'
+    }
   }));
 
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [alert, setAlert] = useState('');
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8080/resetpassword?'+ email);
-      setMessage(response.data.message);
+      setAlert("Password reset link sent succesfully!");
     } catch (error) {
-      setMessage('Failed to reset password. Please try again later.');
+      setAlert('Failed to reset password!');
     }
   };
 
@@ -64,13 +67,18 @@ const ForgotPassword = () => {
               </Grid>
               <Grid item xs={12} sx={12} md={12} >
                 <Button onClick={handleSubmit} type="submit" variant="contained" id="button">
-                  Reset Password
+                  Send reset password link
                 </Button>
               </Grid>
               <Grid item xs={12} sx={12} md={12} >
                 <a href="/login"><h6 className=''><ArrowBackIcon /> Go back to Sign In</h6></a>
               </Grid>
-              {message && <p>{message}</p>}
+              {alert && !alert.includes('success') && 
+              <Grid item xs={12} sx={12} md={12} className='alert-grid' >
+                <Alert className='alert' sx={{ padding: '0px 16px' }} variant="outlined" severity="error">
+                  {alert}
+                </Alert>
+              </Grid>}
               </Grid>
               </div>
           </Item>

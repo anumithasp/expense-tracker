@@ -83,8 +83,8 @@ const SignIn = () => {
             <h3>Welcome Back !</h3>
             <h6>Please Sign in to continue...</h6>
             </div>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
-              <TextField className='signin-field'
+            <Box className='box-login-form' component="form" noValidate sx={{ mt: 1 }}>
+              <TextField className="signin-field"
                 error={!isEmailFormatValid}
                 margin="normal"
                 required
@@ -153,8 +153,8 @@ const SignIn = () => {
               <img style={{height: '25px'}} src="ayoola_white.png" alt="ayoola_logo"/>
             </div> 
             <div className='img-content'>
-              <h5><p className='title'>Get Started By Signing in</p></h5>
-              <p className='content'>Empowering you to track expenses and achieve financial goals seamlessly.</p>
+              <h5><p className='title'>Resume Your Financial Adventure</p></h5>
+              <p className='content'>Step into Your financial journey, where every decision shapes your tomorrow.</p>
             </div>
             <div className='copyright'>
               <p><Copyright /> Ayoola</p>
