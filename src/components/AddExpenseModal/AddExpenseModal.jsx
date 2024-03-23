@@ -18,7 +18,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import './AddExpenseModal.css';
-import Toast from '../Toast/Toast';
 
 const style = {
   position: 'absolute',
@@ -58,7 +57,7 @@ const AddExpenseModal = () => {
       amount: '',
       gst: '',
       date: new Date(),
-      payee: '',
+      payee: sessionStorage.getItem("name"),
       category: 1,
       payment_type: 1,
       description: '',
@@ -125,7 +124,6 @@ const AddExpenseModal = () => {
       } else {
           axios.post("http://localhost:8080/addExpense",input,{headers:headers}).then(
             (response)=>{
-              console.log(response);
               if(response.status === 201){
                 setAlert("Expense added successfully!");
                 setTimeout(() => {
@@ -135,7 +133,7 @@ const AddExpenseModal = () => {
                     amount: '',
                     gst: '',
                     date: new Date(),
-                    payee: '',
+                    payee: sessionStorage.getItem("name"),
                     category: 1,
                     payment_type: 1,
                     description: '',
@@ -159,7 +157,6 @@ const AddExpenseModal = () => {
     useEffect(() => {
       axios.get("http://localhost:8080/categories").then(
               (response)=>{
-                  console.log(response.data);
                   setCategories(response.data.categories);
               }
             ).catch((err)=> {
@@ -167,7 +164,6 @@ const AddExpenseModal = () => {
             })
       axios.get("http://localhost:8080/paymentTypes").then(
         (response)=>{
-            console.log(response.data);
             setPaymentTypes(response.data.paymentTypes);
         }
       ).catch((err)=> {
@@ -178,7 +174,7 @@ const AddExpenseModal = () => {
     return (
       <div >
         <a className="nav-link" href="#">
-            <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Expense </button>
+            <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Expense</button>
         </a>
         <Modal
           open={open}
@@ -207,7 +203,7 @@ const AddExpenseModal = () => {
                   fontFamily: 'Poppins'
                 }} 
                 id="customized-dialog-title">
-                  Add New Expenses
+                  Add New Expense
                 </DialogTitle>
                 <IconButton
                   aria-label="close"

@@ -1,0 +1,7 @@
+.bar-graph {
+    .header {
+        .heading {
+            font-family: var(--exp-font-family);
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart } from '@mui/x-charts';
+import { LineChart, axisClasses } from '@mui/x-charts';
 import { Paper, Box } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
@@ -8,11 +8,31 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 500,
-    width : 950,
-    lineHeight: '60px'
+    width : 875,
+    lineHeight: '60px',
+    '& .css-k69abp-MuiResponsiveChart-container': {
+      paddingLeft: '50px'
+    },
+    fontFamily: 'Poppins'
   }));
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
+
+const chartSetting = {
+  yAxis: [
+    {
+      label: 'transactions (INR)',
+    },
+  ],
+  width: 875,
+  height: 425,
+  sx: {
+    [`.${axisClasses.left} .${axisClasses.label}`]: {
+      transform: 'translate(-20px, 0)',
+    },
+    paddingLeft: '50px'
+  },
+};
 
 const transactionData = [
     {
@@ -71,7 +91,18 @@ const LineGraph = () => {
         }}
         >
           <Item key={1} elevation={1}>
+            <div className='header'>
+              <div className='heading px-3'>
+                  <h5>Cash Flow</h5>
+              </div>
+            </div>
             <LineChart
+                margin={{ left: 60 }}
+                yAxis= {[
+                  {
+                    label: 'transactions (INR)',
+                  }
+                ]}
                 xAxis={[
                     {
                       scaleType: 'band',
@@ -80,12 +111,11 @@ const LineGraph = () => {
                     },
                   ]}
                 series={[
-                    { curve: "linear", data: incomes },
-                    { curve: "linear", data: expenses },
-                    { curve: "linear", data: balances }
+                    { curve: "linear", data: incomes, label: "Income" },
+                    { curve: "linear", data: expenses, label: "Expense" },
+                    { curve: "linear", data: balances, label: "Balance" }
                 ]}
-                width={900}
-                height={500}
+                {...chartSetting}
                 dataset={transactionData}
             />
           </Item>
