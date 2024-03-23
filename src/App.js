@@ -23,6 +23,8 @@ import "@fontsource/poppins/900-italic.css";
 import SignUp from './components/SignUp/SignUp';
 import Dashboard from './components/Dashboard/Dashboard';
 
+import Insights from './components/Insights/Insights';
+
 function App() {
   return (
     <div className="App">
@@ -30,6 +32,7 @@ function App() {
         <Route path= '/' element = {<LandingPage />}></Route>
         <Route path='/signup' element ={<SignUp/>}></Route>
         <Route path='/dashboard'element={<Dashboard />}></Route>
+        <Route path='/insights'element={<Insights />}></Route>
       </Routes>
     </div>
   );
