@@ -8,7 +8,6 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 500,
-    width : 875,
     lineHeight: '60px',
     '& .css-k69abp-MuiResponsiveChart-container': {
       paddingLeft: '50px'

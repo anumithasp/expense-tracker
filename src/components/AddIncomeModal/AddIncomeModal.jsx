@@ -13,6 +13,9 @@ import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import { styled, Alert } from '@mui/material';
 import axios from 'axios';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 const style = {
   position: 'absolute',
@@ -39,6 +42,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
   '& .MuiFormLabel-root, & .MuiInputBase-inputMultiline': {
     fontFamily: 'Poppins'
+  },
+  '& .MuiFormControl-root.income-date': {
+    width: '100%'
   }
 }));
 
@@ -53,6 +59,7 @@ const AddIncomeModal = () => {
       title: '',
       amount: '',
       payer: '',
+      date: new Date(),
       payment_type: 1,
       description: '',
       user_id: sessionStorage.getItem("id")
@@ -86,6 +93,12 @@ const AddIncomeModal = () => {
         }
       }
     };
+    const dateHandler = (event) => {
+      if (event.$isDayjsObject) {
+        console.log(new Date(event.$d));
+        setInput({...input,['date']:new Date(event.$d)});
+      }
+    }
 
     const [headers, setHeaders] = useState(
       {
@@ -101,7 +114,7 @@ const AddIncomeModal = () => {
         input.amount === "" && setIsAmountValid(false);
         input.payer === "" && setIsPayerValid(false);
       } else {
-        axios.post("http://localhost:8080/addIncome",input,{headers:headers}).then(
+        axios.post("http://localhost:8080/addincome",input,{headers:headers}).then(
           (response)=>{
             console.log(response);
             if(response.status === 201){
@@ -112,6 +125,7 @@ const AddIncomeModal = () => {
                   title: '',
                   amount: '',
                   payer: '',
+                  date: new Date(),
                   payment_type: 1,
                   description: '',
                   user_id: sessionStorage.getItem("id")
@@ -130,7 +144,7 @@ const AddIncomeModal = () => {
 
     const [paymentTypes, setPaymentTypes] = useState([]);
     useEffect(()=>{
-      axios.get("http://localhost:8080/paymentTypes").then(
+      axios.get("http://localhost:8080/paymenttypes").then(
         (response) => {
           setPaymentTypes(response.data.paymentTypes);
         }
@@ -140,7 +154,7 @@ const AddIncomeModal = () => {
     },[]);
   
     return (
-      <div>
+      <div className='income-modal'>
         <a className="nav-link" href="#">
             <button onClick={handleOpen} className='btn btn-primary exp-btn-primary'>Add Income </button>
         </a>
@@ -195,7 +209,7 @@ const AddIncomeModal = () => {
                     onChange={inputHandler}
                     />
                   </Grid>
-                  <Grid item xs={3} sm={4} md={4}>
+                  <Grid item xs={6} sm={6} md={6}>
                     <TextField
                     fullWidth
                     required
@@ -213,7 +227,7 @@ const AddIncomeModal = () => {
                     }}  
                     />
                   </Grid>
-                  <Grid item xs={3} sm={4} md={4}>
+                  <Grid item xs={6} sm={6} md={6}>
                     <TextField
                     fullWidth
                     required
@@ -226,7 +240,24 @@ const AddIncomeModal = () => {
                     onChange={inputHandler}
                     />
                   </Grid>
-                  <Grid item xs={4} sm={6} md={4}>
+                  <Grid item xs={6} sm={6} md={6}>
+                  <LocalizationProvider required dateAdapter={AdapterDayjs}>
+                      <DatePicker className='income-date'
+                        label="Date of Purchase"
+                        fullWidth
+                        required
+                        name='date' 
+                        size='medium'
+                        value={dayjs(input.date)}
+                        onChange={dateHandler}
+                        format="YYYY-MM-DD"
+                        disableFuture
+                        openTo="year"
+                        views={["year", "month", "day"]} 
+                      />
+                  </LocalizationProvider>
+                  </Grid>  
+                  <Grid item xs={6} sm={6} md={6}>
                     <TextField
                     label="Payment Type"
                     fullWidth

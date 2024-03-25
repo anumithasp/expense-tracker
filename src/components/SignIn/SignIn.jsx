@@ -38,11 +38,9 @@ const SignIn = () => {
   };
 
   const handleLogin = (e) => {
-    console.log(input);
     e.preventDefault();
     axios.post("http://localhost:8080/login",input).then(
       (response)=>{
-          console.log(response.data);
           if (response.data.status === "success"){
             sessionStorage.setItem("id", response.data.userId);
             sessionStorage.setItem("token", response.data.token);
