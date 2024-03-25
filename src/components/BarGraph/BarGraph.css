@@ -4,4 +4,7 @@
             font-family: var(--exp-font-family);
         }
     }
+    .css-2ee83w-MuiResponsiveChart-container {
+        width: 100%;
+    }
 }

@@ -1,49 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './LoginNav.css';
 import AddExpenseModal from '../AddExpenseModal/AddExpenseModal';
 import AddIncomeModal from '../AddIncomeModal/AddIncomeModal';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavLink, useNavigate } from 'react-router-dom';
+import AddExpenseOCR from '../AddExpenseOCR/AddExpenseOCR';
 
-const LoginNav = () => {
+const LoginNav = ({dashReload}) => {
+  const nav=useNavigate();
+  const [triggerReload, setTriggerReload] = useState(false);
+
+  const reload = (trigger) => {
+    console.log("loginnav" + trigger);
+    setTriggerReload(trigger);
+    dashReload(trigger);
+  }
+
+  const handleLogout = () =>{
+    sessionStorage.clear();
+    nav("/login");
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
-        <div className="container-fluid">
-            <div>
-                <img src="ayoola_blue.png" alt="Ayoola Logo" style={{height: 45}} className='px-3'/>
-            </div>
-            <button className="nav navbar-toggler justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className='d-flex justify-content-end'>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item pl-pr-15 pt-1">
-                            <a className="nav-link exp-link" aria-current="page" href="/dashboard">Dashboard</a>
-                        </li>
-                        <li className="nav-item pl-pr-15 pt-1">
-                            <a className="nav-link exp-link" href="/insights">Insights</a>
-                        </li>
-                        <li className="nav-item pl-pr-15">
-                            <AddExpenseModal />
-                        </li>
-                        <li className="nav-item pl-pr-15">
-                            <AddIncomeModal />
-                        </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {sessionStorage.getItem("name")} {sessionStorage.getItem("isAdmin") == "true" && "(Admin)"}
-                            </a>
-                            <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                
-            </div>
-        </div>
-    </nav>
-  )
-}
+    <Navbar className='login-navbar' collapseOnSelect expand="lg" bg="light" variant="light" sticky='top'>
+      <Container>
+        <Navbar.Brand href="#home">
+            <img src="ayoola_blue.png" alt="Ayoola Logo" style={{height: 45}}/>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+          </Nav>
+          <Nav className='nav-links ml-auto'>
+            <Nav.Link as={NavLink} activeClassName="active" to="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link as={NavLink} activeClassName="active" to="/insights">Insights</Nav.Link>
+            <AddExpenseOCR />
+            <AddExpenseModal reload={reload} />
+            <AddIncomeModal />
+            <NavDropdown title={sessionStorage.getItem("name")} id="collasible-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Profile & Settings</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link href="#profile">
+              <img
+                src="profileimage.svg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top rounded-circle"
+                alt="Profile"
+              />
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
 
-export default LoginNav
+export default LoginNav;

@@ -1,0 +1,14 @@
+.login-navbar {
+    font-family: var(--exp-font-family) !important;
+    .nav-links {
+        display: flex;
+        align-items: center;
+        a{
+            padding-left: 15px !important;
+            padding-right: 15px !important;
+        }
+    }
+    .navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+        font-weight: 500;
+    }
+}
