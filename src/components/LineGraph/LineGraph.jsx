@@ -72,13 +72,10 @@ const transactionData = [
     }
   ];
 
-  const incomes = [300, 550, 200, 324, 434, 120, 459, 1000, 786, 656, 455, 900];
-  const expenses = [200, 350, 199, 240, 370, 90, 280, 750, 594, 432, 232, 450];
-  const balances = [100, 200, 1, 84, 64, 30, 179, 250, 192, 224, 223, 450];
+const LineGraph = (props) => {
 
-const LineGraph = () => {
   return (
-    <div>
+    <div className='line-graph'>
         <ThemeProvider theme={lightTheme}>
         <Box
         sx={{
@@ -110,9 +107,9 @@ const LineGraph = () => {
                     },
                   ]}
                 series={[
-                    { curve: "linear", data: incomes, label: "Income" },
-                    { curve: "linear", data: expenses, label: "Expense" },
-                    { curve: "linear", data: balances, label: "Balance" }
+                    { curve: "linear", data: props.income, label: "Income" },
+                    { curve: "linear", data: props.expense, label: "Expense" },
+                    { curve: "linear", data: props.balance, label: "Balance" }
                 ]}
                 {...chartSetting}
                 dataset={transactionData}

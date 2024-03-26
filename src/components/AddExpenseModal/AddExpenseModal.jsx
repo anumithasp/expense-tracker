@@ -45,7 +45,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   }
 }));
 
-const AddExpenseModal = ({reload}) => {
+const AddExpenseModal = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -138,7 +138,7 @@ const AddExpenseModal = ({reload}) => {
                     description: '',
                     user_id: sessionStorage.getItem("id")
                   });
-                  reload(true);
+                  props.reload();
                 }, 3000);
               }
             }

@@ -37,55 +37,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 
-const dataSet = [
-    {
-        title: "Salary from Employer",
-        isIncome: true,
-        amount: 25000,
-    },
-    {
-        title: "Dinner at O By Tamara",
-        isIncome: false,
-        amount: 5400,
-    },
-    {
-        title: "Zudio shopping for birthday",
-        isIncome: false,
-        amount: 599,
-    },
-    {
-        title: "Shares income",
-        isIncome: true,
-        amount: 30000,
-    },
-    {
-        title: "Coco tree dinner",
-        isIncome: false,
-        amount: 760,
-    },
-    {
-        title: "Salary from 2nd job",
-        isIncome: true,
-        amount: 14000,
-    },
-    {
-        title: "Lebanese Shawarma treat in Lulu Mall - Trivandrum",
-        isIncome: false,
-        amount: 2500,
-    },
-    {
-        title: "Shopping in Lulu Mall",
-        isIncome: false,
-        amount: 4030,
-    },
-    {
-        title: "Income from giving coaching",
-        isIncome: true,
-        amount: 10000,
-    }
-];
-
-const RecentTransactions = () => {
+const RecentTransactions = (props) => {
   return (
     <div className='recent-transactions'>
       <ThemeProvider theme={lightTheme}>
@@ -108,13 +60,14 @@ const RecentTransactions = () => {
                     </ListSubheader>
                     <Grid item xs={12} md={6}>
                         <List>
-                        {dataSet.map((tran) => (
+                        {props.data.length === 0 && <p>No data available to display</p>} 
+                        {props.data.map((tran) => (
                             <div>
                                 <ListItem
                                     secondaryAction={formatNum(tran.amount)}
                                     >
-                                    {tran.isIncome && <IncomeIcon sx={{ paddingRight: '5px', color: '#00c853' }} />}
-                                    {!tran.isIncome && <ExpenseIcon sx={{ paddingRight: '5px', color: '#ff1744' }} />}
+                                    {tran.isIncome === 1 && <IncomeIcon sx={{ paddingRight: '5px', color: '#00c853' }} />}
+                                    {tran.isIncome === 0 && <ExpenseIcon sx={{ paddingRight: '5px', color: '#ff1744' }} />}
                                     <ListItemText title={tran.title} primary={tran.title} />
                                 </ListItem>
                                 <Divider variant="middle" component="li" />

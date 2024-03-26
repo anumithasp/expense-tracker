@@ -28,72 +28,28 @@ const chartSetting = {
     paddingLeft: '50px'
   },
 };
-const dataset = [
-  {
-    income: 590,
-    expense: 280,
-    month: 'Jan',
-  },
-  {
-    income: 600,
-    expense: 450,
-    month: 'Feb',
-  },
-  {
-    income: 200,
-    expense: 160,
-    month: 'Mar',
-  },
-  {
-    income: 1040,
-    expense: 400,
-    month: 'Apr',
-  },
-  {
-    income: 1500,
-    expense: 700,
-    month: 'May',
-  },
-  {
-    income: 1250,
-    expense: 500,
-    month: 'June',
-  },
-  {
-    income: 750,
-    expense: 250,
-    month: 'July',
-  },
-  {
-    income: 120,
-    expense: 20,
-    month: 'Aug',
-  },
-  {
-    income: 475,
-    expense: 115,
-    month: 'Sept',
-  },
-  {
-    income: 392,
-    expense: 390,
-    month: 'Oct',
-  },
-  {
-    income: 1570,
-    expense: 1000,
-    month: 'Nov',
-  },
-  {
-    income: 590,
-    expense: 280,
-    month: 'Dec',
-  },
-];
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const valueFormatter = (value) => `${value} INR`;
 
-const BarGraph = () => {
+const BarGraph = (props) => {
+  var data = [];
+  var counter = 0;
+  for(var i = 0; i < 12; i++) {
+    if (props.income[i] === 0 && props.expense[i] === 0) {
+      counter++;
+    }
+    var obj = {
+      income: props.income[i],
+      expense: props.expense[i],
+      month: months[i]
+    }
+    data[i] = obj;
+  }
+  if (counter == 12)
+    data = [];
+
   return (
     <div className='bar-graph'>
       <ThemeProvider theme={lightTheme}>
@@ -112,16 +68,18 @@ const BarGraph = () => {
                   <h5>Income vs Expense</h5>
               </div>
             </div>
+            {data.length === 0 && <p>No data available to display</p>} 
+            {data.length > 0 &&
             <BarChart className='bar-chart'
               margin={{ left: 60 }}
-              dataset={dataset}
+              dataset={data}
               xAxis={[{ scaleType: 'band', dataKey: 'month', label: "Month" }]}
               series={[
                 { dataKey: 'income', label: 'Income', valueFormatter },
                 { dataKey: 'expense', label: 'Expense', valueFormatter },
               ]}
               {...chartSetting}
-            />
+            />}
           </Item>
         </Box>
       </ThemeProvider>
