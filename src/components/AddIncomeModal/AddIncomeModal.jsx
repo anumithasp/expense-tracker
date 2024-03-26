@@ -49,7 +49,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 
-const AddIncomeModal = () => {
+const AddIncomeModal = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -130,6 +130,7 @@ const AddIncomeModal = () => {
                   description: '',
                   user_id: sessionStorage.getItem("id")
                 });
+                props.reload();
               },3000)
             }
           }

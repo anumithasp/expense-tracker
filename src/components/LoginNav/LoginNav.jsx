@@ -7,14 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import AddExpenseOCR from '../AddExpenseOCR/AddExpenseOCR';
 
-const LoginNav = ({dashReload}) => {
+const LoginNav = (props) => {
   const nav=useNavigate();
-  const [triggerReload, setTriggerReload] = useState(false);
 
-  const reload = (trigger) => {
-    console.log("loginnav" + trigger);
-    setTriggerReload(trigger);
-    dashReload(trigger);
+  const reload = () => {
+    props.dashReload();
   }
 
   const handleLogout = () =>{
@@ -37,7 +34,7 @@ const LoginNav = ({dashReload}) => {
             <Nav.Link as={NavLink} activeClassName="active" to="/insights">Insights</Nav.Link>
             <AddExpenseOCR />
             <AddExpenseModal reload={reload} />
-            <AddIncomeModal />
+            <AddIncomeModal reload={reload} />
             <NavDropdown title={sessionStorage.getItem("name")} id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Profile & Settings</NavDropdown.Item>
               <NavDropdown.Divider />

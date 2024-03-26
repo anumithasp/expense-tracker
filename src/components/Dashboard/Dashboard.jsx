@@ -13,10 +13,16 @@ const Dashboard = () => {
   const [summary, setSummary] = useState([]);
   const [catExpenses, setCatExpenses] = useState([]);
   const [totalExpense, setTotalExpense] = useState(0.0);
+  const [cashFlowExpense, setCashFlowExpense] = useState(Array(12).fill(0));
+  const [cashFlowIncome, setCashFlowIncome] = useState(Array(12).fill(0));
+  const [cashFlowBalance, setCashFlowBalance] = useState(Array(12).fill(0));
+  const [recentTransactions, setRecentTransactions] = useState([]);
 
   const dashReload = () => {
     getSummary();
     getCategoricalExpenses();
+    getCashFlow();
+    getRecentTransactions();
   }
   
   const [headers, setHeaders] = useState(
@@ -48,10 +54,36 @@ const Dashboard = () => {
           console.log(err);
       })
   }
-
+  const getCashFlow = () => {
+    axios.get("http://localhost:8080/cashflow?userId=" + sessionStorage.getItem("id") + "&year=" + new Date().getFullYear(),{headers:headers}).then(
+      (response) => {
+        if(response.data.code === 200) {
+          setCashFlowExpense(response.data.expenses);
+          setCashFlowIncome(response.data.income);
+          setCashFlowBalance(response.data.balance);
+        }
+      }
+    ).catch((err)=> {
+      console.log(err);
+    })
+  }
+  const getRecentTransactions = () => {
+    axios.get("http://localhost:8080/recenttransactions?userId=" + sessionStorage.getItem("id"),{headers:headers}).then(  
+      (response) => {
+        if(response.data.code === 200) {
+          setRecentTransactions(response.data.recentTransactions);
+        }
+      }
+    ).catch((err)=> {
+      console.log(err);
+    })
+  }
+ 
   useEffect(() => {
     getSummary();
     getCategoricalExpenses();
+    getCashFlow();
+    getRecentTransactions();
   }, [])
 
   return (
@@ -67,7 +99,7 @@ const Dashboard = () => {
         </div>
         <div className='second-row d-flex flex-direction-column justify-content-between'>
           <div className='line-graph'>
-            <LineGraph />
+            <LineGraph income={cashFlowIncome} expense={cashFlowExpense} balance={cashFlowBalance}/>
           </div>
           <div className='log-details'>
             <CategoricalExpenses data={catExpenses} totalExpense={totalExpense}/>
@@ -75,10 +107,10 @@ const Dashboard = () => {
         </div>
         <div className='third-row d-flex flex-direction-column justify-content-between'>
           <div className='recent-trans'>
-            <RecentTransactions />
+            <RecentTransactions data={recentTransactions}/>
           </div>
           <div className='bargraph'>
-            <BarGraph />
+            <BarGraph income={cashFlowIncome} expense={cashFlowExpense}/>
           </div>
         </div>
       </div>
