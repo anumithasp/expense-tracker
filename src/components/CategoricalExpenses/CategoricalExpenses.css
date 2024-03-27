@@ -1,0 +1,7 @@
+@media (max-width: 425px) {
+    .categ-expenses {
+        .MuiLinearProgress-root {
+            width: 100px !important;
+        }
+    }    
+}

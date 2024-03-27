@@ -47,7 +47,7 @@ const SignUp = () => {
         } else {
           if(validateEmail(event.target.value)){
             setIsEmailFormatValid(true);
-            axios.get("http://localhost:8080/emailExists?email=" + event.target.value).then(
+            axios.get("http://localhost:8080/emailexists?email=" + event.target.value).then(
               (response) => {
                 if(response.data.code === 200) {
                   setIsEmailExist(true);
@@ -84,7 +84,7 @@ const SignUp = () => {
         if(event.target.value === "") {
           setIsUniqueCodeValid(false);
         } else {
-            axios.get("http://localhost:8080/codeExists?code=" + event.target.value).then(
+            axios.get("http://localhost:8080/codeexists?code=" + event.target.value).then(
               (response) => {
                 if(response.data.code === 200){
                   setIsCodeExist(true);

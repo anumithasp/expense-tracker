@@ -2,6 +2,24 @@
     font-family: var(--exp-font-family) !important;
     .content {
         margin: 0px 50px;
+        .first-row, .second-row, .third-row {
+            width: 100%;
+        }
+        .balance-tran, .income-tran, .expense-tran {
+            width: 33.3%;
+        }
+        .line-graph {
+            width: 65%;
+        }
+        .log-details {
+            width: 35%;
+        }
+        .recent-trans {
+            width: 40%;
+        }
+        .bargraph {
+            width: 60%;
+        }
     }
     .header {
         .heading {
@@ -10,5 +28,26 @@
                 text-align: left;
             }
         }
+    }
+}
+
+@media (max-width: 1024px) {
+    .first-row {
+        flex-direction: column;
+    }
+    .balance-tran, .income-tran, .expense-tran {
+        width: 100% !important;
+    }
+    .line-graph {
+        display: none;
+    }
+    .log-details {
+        width: 100% !important;
+    }
+    .recent-trans {
+        width: 100% !important;
+    }
+    .bargraph {
+        display: none;
     }
 }

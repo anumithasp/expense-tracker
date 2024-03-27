@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
@@ -11,13 +11,14 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 175,
-    width : 400,
     lineHeight: '60px'
   }));
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
+
 const TransactionBanner = (props) => {
+  
   return (
     <div>
       <ThemeProvider theme={lightTheme}>
@@ -42,9 +43,9 @@ const TransactionBanner = (props) => {
               </div>
               <div className='symbol px-3'>
                 <div className='icon'>
-                  {props.title.includes('INCOME') && <TrendingDown fontSize='large' sx={{ color: '#00c853' }} />}
-                  {props.title.includes('EXPENSE') && <TrendingUp fontSize='large' sx={{ color: '#ff1744' }} />}
-                  {!(props.title.includes('EXPENSE') || props.title.includes('INCOME')) && <Wallet fontSize='large' sx={{ color: '#014f86' }} />}
+                  {props.title === 'INCOME' && <TrendingDown fontSize='large' sx={{ color: '#00c853' }} />}
+                  {props.title === 'EXPENSE' && <TrendingUp fontSize='large' sx={{ color: '#ff1744' }} />}
+                  {!(props.title === 'EXPENSE' || props.title === 'INCOME') && <Wallet fontSize='large' sx={{ color: '#014f86' }} />}
                 </div>
                 <div className='icon' style= {{ backgroundColor: '#dbe2f6' }}>
                   <CurrencyRupeeIcon fontSize='large' sx={{ color: '#014f86' }} />

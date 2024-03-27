@@ -17,7 +17,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import './AddExpenseModal.css';
 
 const style = {
   position: 'absolute',
@@ -46,7 +45,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   }
 }));
 
-const AddExpenseModal = () => {
+const AddExpenseModal = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -122,7 +121,7 @@ const AddExpenseModal = () => {
         input.gst === "" && setIsGstValid(false);
         input.payee === "" && setIsPayeeValid(false);
       } else {
-          axios.post("http://localhost:8080/addExpense",input,{headers:headers}).then(
+          axios.post("http://localhost:8080/addexpense",input,{headers:headers}).then(
             (response)=>{
               if(response.status === 201){
                 setAlert("Expense added successfully!");
@@ -139,6 +138,7 @@ const AddExpenseModal = () => {
                     description: '',
                     user_id: sessionStorage.getItem("id")
                   });
+                  props.reload();
                 }, 3000);
               }
             }
@@ -162,7 +162,7 @@ const AddExpenseModal = () => {
             ).catch((err)=> {
               console.log(err);
             })
-      axios.get("http://localhost:8080/paymentTypes").then(
+      axios.get("http://localhost:8080/paymenttypes").then(
         (response)=>{
             setPaymentTypes(response.data.paymentTypes);
         }

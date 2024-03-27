@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import './LogDetails.css';
+import './CategoricalExpenses.css';
 import { LinearProgress, Divider, Grid, List, ListItem, ListItemText } from '@mui/material';
 import { ShoppingCart, Fastfood, School, Houseboat, ShoppingBag, 
         EmojiTransportation, MonitorHeart, CardGiftcard, MiscellaneousServices } from '@mui/icons-material';
@@ -12,7 +12,6 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 500,
-    width : 425,
     lineHeight: '60px',
     fontFamily: 'Poppins',
     '& .MuiTypography-root': {
@@ -22,7 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
         paddingLeft: '10px'
     },
     '& .MuiLinearProgress-root': {
-        width: '200px',
+        width: '100%',
         height: '10px',
         borderRadius: 5
     }
@@ -30,59 +29,52 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const dataSet = [
+const iconMapper = [
     {
         name: "Shopping",
-        amount: 3000,
         icon: <ShoppingCart fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Food",
-        amount: 1500,
         icon: <Fastfood fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Education",
-        amount: 4000,
         icon: <School fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Vacation",
-        amount: 10000,
         icon: <Houseboat fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Grocery",
-        amount: 3000,
         icon: <ShoppingBag fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Transportation",
-        amount: 1000,
         icon: <EmojiTransportation fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Insurance",
-        amount: 2250,
         icon: <MonitorHeart fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Gifts",
-        amount: 500,
         icon: <CardGiftcard fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Others",
-        amount: 750,
         icon: <MiscellaneousServices fontSize='small' sx={{ color: "#014f86" }} />
     }
 ];
 
 
 
-const LogDetails = () => {
+const CategoricalExpenses = (props) => {
+
+
   return (
-    <div>
+    <div className='categ-expenses'>
         <ThemeProvider theme={lightTheme}>
             <Box
             sx={{
@@ -100,14 +92,16 @@ const LogDetails = () => {
                     </div>
                     <Grid item xs={12} md={6}>
                         <List>
-                        {dataSet.map((category) => (
+                        {props.data.map((category) => (
                             <div>
                                 <ListItem>
-                                    {category.icon}
-                                    <ListItemText
-                                        primary={category.name}
-                                    />
-                                    <LinearProgress title={category.amount} variant="determinate" value={category.amount/15000*100} />
+                                    {iconMapper.filter((icon) => icon.name === category.name)[0].icon}
+                                    <div style={{ width: '50%' }}>
+                                        <ListItemText primary={category.name} />
+                                    </div>
+                                    <div style={{ width: '50%' }}>
+                                        <LinearProgress title={category.expense} variant="determinate" value={category.expense/props.totalExpense*100} />
+                                    </div>
                                 </ListItem>
                                 <Divider variant="middle" component="li" />
                             </div>
@@ -121,4 +115,4 @@ const LogDetails = () => {
   )
 }
 
-export default LogDetails
+export default CategoricalExpenses
