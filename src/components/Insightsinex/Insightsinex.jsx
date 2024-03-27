@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import './Insights.css'
+import React from 'react'
+import { useEffect, useState } from 'react'
+import './Insightsinex.css';
 import { Paper, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
@@ -18,9 +19,28 @@ import LoginNav from '../LoginNav/LoginNav';
 import { Link } from 'react-router-dom';
 
 
-const Insights = () => {
+
+const Insightsinex = () => {
+
+
+
 
     const [rows, setRows] = useState([]);
+    const [rowsIn, setRowsIn] = useState([]);
+
+    const fetchIncomeData= ()=>{
+        axios.get('http://localhost:8080/insightsin?userId=2')
+            .then(response => {
+                
+                console.log("response.data")
+                setRowsIn(response.data.insightsin);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    useEffect(() => {fetchIncomeData()}, []);
     
 
 
@@ -30,11 +50,6 @@ const Insights = () => {
         setOnselect(true);
     }
 
-    const [back, setBack]= useState(false);
-    const iconClick = ()=> 
-    {
-        setBack(true);
-    }
     
 
     const renderIcon = (title) => {
@@ -66,7 +81,6 @@ const Insights = () => {
         color: onselect ? '#014f86' : 'rgb(112, 112, 112)'
 
     }
-
     const fetchExpenseData= ()=>{
         axios.get('http://localhost:8080/insights?userId=2')
             .then(response => {
@@ -84,18 +98,18 @@ const Insights = () => {
     
 
     useEffect(() => {fetchExpenseData()}, []);
-        
-    
 
-    return (
+
+
+  return (
+    <div>
         <div>
             <LoginNav />
             <Link to="/dashboard" id="back">
                     <ArrowBackTwoToneIcon style={{ color: "#014f86" }} />
              </Link>
             <div className="container ms-5 mt-5">
-                
-            
+
                 <div className='' id='head'>
                     <h4 className='text-start' id="h4text">Insights of your ayoola account</h4>
                     <h6 className="text-start" id="h6text">Welcome to Ayoola Finanace Managment and Budget Tracker.</h6>
@@ -103,9 +117,9 @@ const Insights = () => {
 
                 <div className="text-start container ms-5 mt-5" id="nav">
 
-                    <Link onClick={onSelection} style={styles} to="/insightsincome" className='pr-5' id='op1'>Income</Link>
-                    <Link onClick={onSelection} style={styles} to="/insights" className='ps-5' id='op2'>Expenses</Link>
-                    <Link onClick={onSelection} style={styles} to="/transactionscmp" className='ps-5'id='op3'>Transaction History</Link>
+                    <Link onClick={onSelection} style={styles} to="/insightsincome" className='pr-5'>Income</Link>
+                    <Link onClick={onSelection} style={styles} to="/insights" className='ps-5'>Expenses</Link>
+                    <Link onClick={onSelection} style={styles} to="/transactionscmp" className='ps-5'>Transaction History</Link>
 
                 </div>
 
@@ -113,10 +127,10 @@ const Insights = () => {
             </div>
 
            <div className="ms-5 p-3">
-            <TableContainer component={Paper} className='table d-flex justify-content-cente'>
+            <TableContainer component={Paper} className=' d-flex justify-content-cente'>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
-                        <h6 className='text-start ms-3 mt-3' style={{ color: "#a3a0a0"}}>Expenses</h6>
+                    <h6 className='text-start ms-3 mt-3' style={{ color: "#a3a0a0"}}>Expenses</h6>
                         <TableRow>
                             <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Catogery </TableCell>
                             <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold" }}>Date </TableCell>
@@ -143,19 +157,46 @@ const Insights = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-      </div>    
-
-
-
-      
-
-           
+      </div>   
 
 
       
+        <div className="ms-5 p-3">
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                    <h6 className='text-start ms-3 mt-3' >Income</h6>
+                        <TableRow>
+                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Catogery </TableCell>
+                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Date </TableCell>
+                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Description </TableCell>
+                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Amount </TableCell>
+                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Currency </TableCell>
+                            
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rowsIn.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell className="p-3">{renderIcon(row.title)}{row.title}</TableCell>
+                                <TableCell className="p-3">{row.created_date}</TableCell>
+                                <TableCell className="p-3">{row.description ? row.description : "N/A"}</TableCell>
+                                <TableCell className="p-3">{row.amount}</TableCell>
+                                <TableCell className="p-3">{"INR"}</TableCell>
+                                
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+      </div>   
 
-
-        </div>
-    )
+      </div>
+    </div>
+  )
 }
-export default Insights
+
+export default Insightsinex
