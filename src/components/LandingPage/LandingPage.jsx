@@ -39,7 +39,7 @@ const LandingPage = () => {
         <FeatureBanner words={featureBannerWordsTwo} image={"safepanel2.png"} fromLeft={false}/>
         <div className='height-gap'></div>
         <FeatureBanner words={featureBannerWordsThree} image={"safepanel3.png"} fromLeft={true}/>
-        <AboutUs />
+        <AboutUs /> 
         <Services />
         <CustomerCare />
         <Footer />
