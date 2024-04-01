@@ -11,4 +11,21 @@
     .navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
         font-weight: 500;
     }
+    .login-nav-dropdown {
+        display: flex;
+        align-items: center;
+        .MuiListItemText-root {
+            text-align: left;
+            .MuiTypography-root {
+                font-family: var(--exp-font-family) !important;
+            }
+        }
+    }
+    .dropdown-toggle::after {
+        margin-left: 1.255em;
+    }
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: var(--exp-primary-color) !important;
 }

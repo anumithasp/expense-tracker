@@ -150,7 +150,6 @@ const SignUp = () => {
     };
 
     const handleRegister = (e) => {
-      console.log(input);
       e.preventDefault();
       if(input.name === "" || input.email === "" || input.password === "" || (!input.checkedCode && input.uniqueCode === "")) {
         input.name === "" && setIsNameValid(false);

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './LoginNav.css';
-import AddExpenseModal from '../AddExpenseModal/AddExpenseModal';
 import AddIncomeModal from '../AddIncomeModal/AddIncomeModal';
-import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink, useNavigate } from 'react-router-dom';
-import AddExpenseOCR from '../AddExpenseOCR/AddExpenseOCR';
+import AddExpense from '../AddExpense/AddExpense';
+import { ListItemText } from '@mui/material';
 
 const LoginNav = (props) => {
   const nav=useNavigate();
@@ -32,23 +32,21 @@ const LoginNav = (props) => {
           <Nav className='nav-links ml-auto'>
             <Nav.Link as={NavLink} activeClassName="active" to="/dashboard">Dashboard</Nav.Link>
             <Nav.Link as={NavLink} activeClassName="active" to="/insights">Insights</Nav.Link>
-            <AddExpenseOCR />
-            <AddExpenseModal reload={reload} />
+            <AddExpense reload={reload}/>
             <AddIncomeModal reload={reload} />
-            <NavDropdown title={sessionStorage.getItem("name")} id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Profile & Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#profile">
-              <img
-                src="profileimage.svg"
-                width="30"
-                height="30"
-                className="d-inline-block align-top rounded-circle"
-                alt="Profile"
-              />
-            </Nav.Link>
+          </Nav>
+          <Nav className='nav-links'>
+            <Dropdown>
+                <Dropdown.Toggle variant="light" id="dropdown-basic" className='login-nav-dropdown'>
+                  <img src="profileimage.svg" alt="Profile" style={{ width: '32px', borderRadius: '50%', marginRight: '5px' }} />
+                  {/* {sessionStorage.getItem("name")} */}
+                  <ListItemText secondary={sessionStorage.getItem("isAdmin") == 'true' && `isAdmin`} primary={sessionStorage.getItem("name")} />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Dropdown.Item as={NavLink} to="/profile">Profile & Settings</Dropdown.Item>
+                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>

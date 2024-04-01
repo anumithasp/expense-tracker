@@ -5,13 +5,14 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import './CategoricalExpenses.css';
 import { LinearProgress, Divider, Grid, List, ListItem, ListItemText } from '@mui/material';
 import { ShoppingCart, Fastfood, School, Houseboat, ShoppingBag, 
-        EmojiTransportation, MonitorHeart, CardGiftcard, MiscellaneousServices } from '@mui/icons-material';
+         MonitorHeart, CardGiftcard, MiscellaneousServices, CreditCard } from '@mui/icons-material';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 500,
+    overflow: 'auto',
     lineHeight: '60px',
     fontFamily: 'Poppins',
     '& .MuiTypography-root': {
@@ -51,8 +52,8 @@ const iconMapper = [
         icon: <ShoppingBag fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
-        name: "Transportation",
-        icon: <EmojiTransportation fontSize='small' sx={{ color: "#014f86" }} />
+        name: "EMI",
+        icon: <CreditCard fontSize='small' sx={{ color: "#014f86" }} />
     },
     {
         name: "Insurance",
