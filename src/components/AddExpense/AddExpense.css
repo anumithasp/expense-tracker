@@ -1,0 +1,15 @@
+.add-expense-modal {
+    --exp-primary-color: #014f86;
+    --exp-font-family: "Poppins" !important;
+}
+.addbutton-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#ocrAddBtn {
+    --exp-primary-color: #014f86;
+    background-color: var(--exp-primary-color) !important;
+    color: white !important;
+}

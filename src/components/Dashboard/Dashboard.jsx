@@ -8,6 +8,7 @@ import RecentTransactions from '../RecentTransactions/RecentTransactions';
 import BarGraph from '../BarGraph/BarGraph';
 import { formatNum } from '../../App';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
   const [summary, setSummary] = useState([]);
@@ -17,6 +18,13 @@ const Dashboard = () => {
   const [cashFlowIncome, setCashFlowIncome] = useState(Array(12).fill(0));
   const [cashFlowBalance, setCashFlowBalance] = useState(Array(12).fill(0));
   const [recentTransactions, setRecentTransactions] = useState([]);
+  let viewAsUser = sessionStorage.getItem('id');
+  const location = useLocation();
+  if(location.state != null) {
+    viewAsUser = location.state.id;
+  } else {
+    viewAsUser = sessionStorage.getItem('id');
+  }
 
   const dashReload = () => {
     getSummary();
@@ -32,7 +40,7 @@ const Dashboard = () => {
   )
 
   const getSummary = () => {
-    axios.get("http://localhost:8080/monthlysummary?userId=" + sessionStorage.getItem("id"),{headers:headers}).then(
+    axios.get("http://localhost:8080/monthlysummary?userId=" + viewAsUser,{headers:headers}).then(
         (response)=>{
           if(response.data.code === 200) {
             setSummary(JSON.parse(response.data.summary));
@@ -45,7 +53,7 @@ const Dashboard = () => {
   }
 
   const getCategoricalExpenses = () => {
-    axios.get("http://localhost:8080/categoricalexpenses?userId=" + sessionStorage.getItem("id"),{headers:headers}).then(
+    axios.get("http://localhost:8080/categoricalexpenses?userId=" + viewAsUser,{headers:headers}).then(
         (response)=>{
           if(response.data.code === 200) {
             setCatExpenses(response.data.categoricalExpenses);
@@ -55,7 +63,7 @@ const Dashboard = () => {
       })
   }
   const getCashFlow = () => {
-    axios.get("http://localhost:8080/cashflow?userId=" + sessionStorage.getItem("id") + "&year=" + new Date().getFullYear(),{headers:headers}).then(
+    axios.get("http://localhost:8080/cashflow?userId=" + viewAsUser + "&year=" + new Date().getFullYear(),{headers:headers}).then(
       (response) => {
         if(response.data.code === 200) {
           setCashFlowExpense(response.data.expenses);
@@ -68,7 +76,7 @@ const Dashboard = () => {
     })
   }
   const getRecentTransactions = () => {
-    axios.get("http://localhost:8080/recenttransactions?userId=" + sessionStorage.getItem("id"),{headers:headers}).then(  
+    axios.get("http://localhost:8080/recenttransactions?userId=" + viewAsUser,{headers:headers}).then(  
       (response) => {
         if(response.data.code === 200) {
           setRecentTransactions(response.data.recentTransactions);
@@ -84,12 +92,17 @@ const Dashboard = () => {
     getCategoricalExpenses();
     getCashFlow();
     getRecentTransactions();
-  }, [])
+  }, [viewAsUser])
 
   return (
     <div className='exp-dashboard'>
       <LoginNav dashReload={dashReload}/>
       <div className='content'>
+        {sessionStorage.getItem("isAdmin") === 'true' && location.state != null &&
+        <div className="view-as">
+          <h4 style={{ color: '#014f86', fontWeight: '600' }}>{location.state.name}</h4>
+        </div>
+        }
         <div className='first-row d-flex justify-content-between'>
           {summary.map((trans) => (
             <div className={`${trans.title.toLowerCase()}${'-tran'}`}>

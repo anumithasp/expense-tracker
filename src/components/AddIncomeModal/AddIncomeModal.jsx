@@ -37,7 +37,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
   '& .MuiPaper-root': {
-    maxWidth: '600px',
+    maxWidth: '800px',
+    width: '800px',
     borderRadius: '10px'
   },
   '& .MuiFormLabel-root, & .MuiInputBase-inputMultiline': {
@@ -223,7 +224,7 @@ const AddIncomeModal = (props) => {
                     placeholder="0.0"  
                     value={input.amount}
                     onChange={inputHandler}
-                    InputProps={ input.amount != '' &&  {
+                    InputProps={ input.amount !== '' &&  {
                       startAdornment: <CurrencyRupeeIcon sx={{fontSize:'medium'}}/>
                     }}  
                     />

@@ -1,0 +1,33 @@
+.user-profile-settings {
+    .title {
+        text-align: start;
+        h3 {
+            color: var(--exp-primary-color);
+        }
+        span {
+            opacity: .8;
+        }
+    }
+    .profile-details, .family-details {
+        padding: 0rem 1rem;
+        .member-name {
+            .MuiTypography-root {
+                font-weight: 500;
+                color: var(--exp-primary-color);
+            }
+            p {
+                color: black !important;
+                opacity: 0.8;
+                font-weight: 300 !important;
+                font-size: small;
+            }
+        }
+    }
+    .eye-link {
+        color: var(--exp-primary-color) !important;
+    }
+}
+
+.dropdown-item.active {
+    --bs-dropdown-link-active-bg: var(--exp-primary-color) !important;
+}

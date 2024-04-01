@@ -58,7 +58,7 @@ const RecentTransactions = (props) => {
                             </div>
                         </div>
                     </ListSubheader>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6} key="recent-trans">
                         <List>
                         {props.data.length === 0 && <p>No data available to display</p>} 
                         {props.data.map((tran) => (

@@ -30,3 +30,12 @@
         color: #014f86;
     } 
 }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    a{
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+}

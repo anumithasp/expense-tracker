@@ -27,6 +27,7 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import Insights from './components/Insights/Insights';
 import InsightsIn from './components/InsightsIn/InsightsIn';
 import Insightsinex from './components/Insightsinex/Insightsinex';
+import UserProfile from './components/UserProfile/UserProfile';
 
 export function formatNum(number) {
   var decPlaces = 2;
@@ -74,12 +75,12 @@ function App() {
         <Route path= '/' element = {<LandingPage />}></Route>
         <Route path= '/login' element={<SignIn />}></Route>
         <Route path='/signup' element ={<SignUp/>}></Route>
-        <Route path='/dashboard'element={<Dashboard />}></Route>
-        <Route path='/insights'element={<Insights />}></Route>
-        <Route path='/forgotpassword'element={<ForgotPassword />}></Route>
-        <Route path='/insightsincome'element={<InsightsIn/>}></Route>
-        <Route path='/transactionscmp'element={<Insightsinex/>}></Route>
-
+        <Route path='/dashboard' element={<Dashboard />}></Route>
+        <Route path='/insights' element={<Insights />}></Route>
+        <Route path='/forgotpassword' element={<ForgotPassword />}></Route>
+        <Route path='/insightsincome' element={<InsightsIn/>}></Route>
+        <Route path='/transactionscmp' element={<Insightsinex/>}></Route>
+        <Route path='/profile' element={<UserProfile />}></Route>
       </Routes>
     </div>
   );
