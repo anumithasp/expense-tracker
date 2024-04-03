@@ -187,6 +187,8 @@ const AddExpense = (props) => {
                   description: '',
                   user_id: sessionStorage.getItem("id")
                 });
+                setImage(null);
+                setOcrText("");
                 props.reload();
               }, 3000);
             }

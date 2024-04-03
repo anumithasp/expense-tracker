@@ -6,6 +6,7 @@ import ExpenseIcon from '@mui/icons-material/NorthEast';
 import { ArrowForwardIosRounded } from '@mui/icons-material'
 import './RecentTransactions.css';
 import { formatNum } from '../../App';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -54,7 +55,9 @@ const RecentTransactions = (props) => {
                         <div className='header'>
                             <div className='heading d-flex justify-content-between'>
                                 <h5>Recent Transactions</h5>
-                                <a title='Click to view all transactions' href='/insights'><ArrowForwardIosRounded sx={{ color: '#014f86' }} /></a>
+                                <Link title='Click to view all transactions' to="/insights" state={{ display: "transactions" }}>
+                                    <ArrowForwardIosRounded sx={{ color: '#014f86' }} />
+                                </Link>
                             </div>
                         </div>
                     </ListSubheader>

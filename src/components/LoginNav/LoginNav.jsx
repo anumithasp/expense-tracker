@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './LoginNav.css';
 import AddIncomeModal from '../AddIncomeModal/AddIncomeModal';
 import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
@@ -18,6 +18,15 @@ const LoginNav = (props) => {
     sessionStorage.clear();
     nav("/login");
   }
+
+  useEffect(() => {
+      let userId = sessionStorage.getItem("id")
+      if(userId === null || userId === undefined)
+      {
+        nav("/")
+      }
+    }
+  )
 
   return (
     <Navbar className='login-navbar' collapseOnSelect expand="lg" bg="light" variant="light" sticky='top'>
@@ -39,8 +48,7 @@ const LoginNav = (props) => {
             <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic" className='login-nav-dropdown'>
                   <img src="profileimage.svg" alt="Profile" style={{ width: '32px', borderRadius: '50%', marginRight: '5px' }} />
-                  {/* {sessionStorage.getItem("name")} */}
-                  <ListItemText secondary={sessionStorage.getItem("isAdmin") == 'true' && `isAdmin`} primary={sessionStorage.getItem("name")} />
+                  <ListItemText secondary={sessionStorage.getItem("isAdmin") === 'true' && `Admin`} primary={sessionStorage.getItem("name")} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item as={NavLink} to="/profile">Profile & Settings</Dropdown.Item>

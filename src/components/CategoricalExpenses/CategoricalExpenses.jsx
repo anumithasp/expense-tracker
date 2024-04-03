@@ -108,7 +108,7 @@ const CategoricalExpenses = (props) => {
                             </div>
                         ))}
                         </List>
-                    </Grid>
+                    </Grid> 
                 </Item>
             </Box>
         </ThemeProvider>
