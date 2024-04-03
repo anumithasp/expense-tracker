@@ -1,160 +1,202 @@
 import React, { useEffect, useState } from 'react'
 import './Insights.css'
-import { Paper, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Table } from 'react-bootstrap';
+import { Box, Grid, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import axios from 'axios';
-import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FlightIcon from '@mui/icons-material/Flight';
-import FastfoodIcon from '@mui/icons-material/Fastfood';
-import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import SchoolIcon from '@mui/icons-material/School';
-import DirectionsBusFilledIcon from '@mui/icons-material/DirectionsBusFilled';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import LoginNav from '../LoginNav/LoginNav';
-import { Link } from 'react-router-dom';
+import { DataGrid } from '@mui/x-data-grid';
+import dayjs from 'dayjs';
+import IncomeIcon from '@mui/icons-material/CallReceived';
+import ExpenseIcon from '@mui/icons-material/NorthEast';
+import { useLocation } from 'react-router-dom';
 
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    height: 631,
+    overflow: 'auto',
+    lineHeight: '60px',
+    fontFamily: 'Poppins',
+    '& .MuiTypography-root, .MuiDataGrid-cell': {
+        fontFamily: 'Poppins'
+    },
+    '& .MuiDataGrid-columnHeaderTitle': {
+        fontFamily: 'Poppins',
+        fontWeight: 600,
+        fontSize: 'medium',
+        color: '#014f86'
+    },
+    '& .MuiListItemText-root': {
+        paddingLeft: '10px'
+    },
+    '& .MuiLinearProgress-root': {
+        width: '100%',
+        height: '10px',
+        borderRadius: 5
+    },
+    '& .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows': {
+        marginBottom: '0px'
+    }
+  }));
+
+const expenseColumns = [
+    { field: 'title', headerName: 'Title', width: 400 },
+    { field: 'amount', headerName: 'Amount', width: 130 },
+    { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
+    { field: 'description', headerName: 'Description', sortable: false, width: 300 },
+    { field: 'category', headerName: 'Category', sortable: false, width: 200 }
+];
+
+const incomeColumns = [
+    { field: 'title', headerName: 'Title', width: 400 },
+    { field: 'amount', headerName: 'Amount', width: 130 },
+    { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
+    { field: 'description', headerName: 'Description', sortable: false, width: 300 },
+    { field: 'payer', headerName: 'Payer', width: 200 }
+];
+
+const transactionColumns = [
+    { field: 'isIncome', headerName: 'Income/Expense', sortable: false, width: 200, 
+            renderCell: (params) => params.row.isIncome === 1 ? <IncomeIcon sx={{ paddingRight: '5px', color: '#00c853' }} /> :
+            <ExpenseIcon sx={{ paddingRight: '5px', color: '#ff1744' }} />
+    },
+    { field: 'title', headerName: 'Title', width: 400 },
+    { field: 'amount', headerName: 'Amount', width: 130 },
+    { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
+    { field: 'description', headerName: 'Description', sortable: false, width: 300 }
+];
+
+const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 const Insights = () => {
+    const [expenseData, setExpenseData] = useState([]);
+    const [incomeData, setIncomeData] = useState([]);
+    const [transactions, setTransactions] = useState([]);
+    const [alignment, setAlignment] = useState('income');
+    const location = useLocation();
 
-    const [rows, setRows] = useState([]);
+    const handleChange = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
     
+    const [headers, setHeaders] = useState(
+        {
+          "Authorization" : "Bearer " + sessionStorage.getItem("token")
+        }
+      )
 
-
-
-    const [onselect, setOnselect] = useState(false);
-    const onSelection = () => {
-        setOnselect(true);
+    const fetchData = (alignment) =>{
+        axios.get('http://localhost:8080/insights?userId=' + sessionStorage.getItem("id") + "&display=" + alignment, {headers: headers})
+        .then(response => {
+            if(response.data.code === 200) {
+                if(alignment === 'expense') {
+                    setExpenseData(response.data.expense);
+                } else if (alignment === 'transactions') {
+                    setTransactions(response.data.transactions);
+                } else {
+                    setIncomeData(response.data.income);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
     }
 
-    const [back, setBack]= useState(false);
-    const iconClick = ()=> 
-    {
-        setBack(true);
-    }
-    
-
-    const renderIcon = (title) => {
-        switch (title) {
-            case 'shopping':
-                return <ShoppingBagIcon style={{ color: "#014f86" }} />;
-            case 'trip':
-                return <FlightIcon style={{ color: "#014f86" }} />;
-            case 'food':
-                return <FastfoodIcon style={{ color: "#014f86" }} />;
-            case 'education' :
-                return <SchoolIcon style={{ color: "#014f86" }} />;
-            case 'gifts':
-                return <CardGiftcardIcon style={{ color: "#014f86" }} />;
-            case 'insurance':
-                return < AccountBalanceIcon style={{ color: "#014f86" }} />;
-            case 'transportation':
-                return <DirectionsBusFilledIcon style={{ color: "#014f86" }} />;       
-            case 'grocery':
-                return <LocalGroceryStoreIcon style={{ color: "#014f86" }} />;
-            case 'salary':
-                return <CurrencyRupeeIcon style={{ color: "#014f86" }} />
-
-          default:
-            return null; // Return null if no matching title
-        }}
-
-    const styles = {
-        color: onselect ? '#014f86' : 'rgb(112, 112, 112)'
-
-    }
-
-    const fetchExpenseData= ()=>{
-        axios.get('http://localhost:8080/insights?userId=2')
-            .then(response => {
-                // Update the state with the fetched data
-                console.log("response.data")
-                setRows(response.data.insights);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }
-
-
-    
-    
-
-    useEffect(() => {fetchExpenseData()}, []);
-        
-    
+    useEffect(() => {
+        if(location.state != null) {
+            setAlignment(location.state.display);
+            location.state = null;
+        }
+        fetchData(alignment);
+    }, [alignment]);
 
     return (
         <div>
             <LoginNav />
-            <Link to="/dashboard" id="back">
-                    <ArrowBackTwoToneIcon style={{ color: "#014f86" }} />
-             </Link>
-            <div className="container ms-5 mt-5">
-                
-            
-                <div className='' id='head'>
+            <div className="container mt-3"> 
+                <div id='head'>
                     <h4 className='text-start' id="h4text">Insights of your ayoola account</h4>
-                    <h6 className="text-start" id="h6text">Welcome to Ayoola Finanace Managment and Budget Tracker.</h6>
+                    <h6 className="text-start" id="h6text">Welcome to Ayoola Finanace Management and Budget Tracker.</h6>
                 </div>
-
-                <div className="text-start container ms-5 mt-5" id="nav">
-
-                    <Link onClick={onSelection} style={styles} to="/insightsincome" className='pr-5' id='op1'>Income</Link>
-                    <Link onClick={onSelection} style={styles} to="/insights" className='ps-5' id='op2'>Expenses</Link>
-                    <Link onClick={onSelection} style={styles} to="/transactionscmp" className='ps-5'id='op3'>Transaction History</Link>
-
+                <div className="mt-3" id="nav">
+                    <ToggleButtonGroup
+                        color="primary"
+                        value={alignment}
+                        exclusive
+                        onChange={handleChange}
+                        aria-label="Platform"
+                        className='toggle-btn-group'
+                        >
+                        <ToggleButton value="income">Income</ToggleButton>
+                        <ToggleButton value="expense">Expenses</ToggleButton>
+                        <ToggleButton value="transactions">Transaction History</ToggleButton>
+                    </ToggleButtonGroup>
                 </div>
-
-
+                <ThemeProvider theme={lightTheme}>
+                    <Box
+                    sx={{
+                        p: 2,
+                        borderRadius: 2,
+                        bgcolor: 'background.default',
+                        display: 'grid',
+                    }}
+                    >
+                        <Item key={1} elevation={1}> 
+                            <Grid xs={12} md={12} sm={12} xl={12}>
+                            <div style={{ height: 631, width: '100%' }}>
+                                {alignment === 'expense' && expenseData.length > 0 &&
+                                    <DataGrid
+                                        rows={expenseData}
+                                        columns={expenseColumns}
+                                        getRowId={(row) => row.id}
+                                        initialState={{
+                                            pagination: {
+                                                paginationModel: { page: 0, pageSize: 10 },
+                                            },
+                                        }}
+                                        pageSizeOptions={[5, 10]}
+                                />}
+                                {alignment === 'expense' && expenseData.length === 0 &&
+                                    <p>No data available to display</p>
+                                }
+                                {alignment === 'income' && incomeData.length > 0 &&
+                                    <DataGrid
+                                        rows={incomeData}
+                                        columns={incomeColumns}
+                                        getRowId={(row) => row.id}
+                                        initialState={{
+                                            pagination: {
+                                                paginationModel: { page: 0, pageSize: 10 },
+                                            },
+                                        }}
+                                        pageSizeOptions={[5, 10]}
+                                />}
+                                {alignment === 'income' && incomeData.length === 0 &&
+                                    <p>No data available to display</p>
+                                }
+                                {alignment === 'transactions' && transactions.length > 0 &&
+                                    <DataGrid
+                                        rows={transactions}
+                                        columns={transactionColumns}
+                                        getRowId={(row) => row.id}
+                                        initialState={{
+                                            pagination: {
+                                                paginationModel: { page: 0, pageSize: 10 },
+                                            },
+                                        }}
+                                        pageSizeOptions={[5, 10]}
+                                />}
+                                {alignment === 'transactions' && transactions.length === 0 &&
+                                    <p>No data available to display</p>
+                                }
+                            </div>
+                            </Grid>
+                        </Item>
+                    </Box>
+                </ThemeProvider>   
             </div>
-
-           <div className="ms-5 p-3">
-            <TableContainer component={Paper} className='table d-flex justify-content-cente'>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <h6 className='text-start ms-3 mt-3' style={{ color: "#a3a0a0"}}>Expenses</h6>
-                        <TableRow>
-                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold", fontFamily:"Poppins" }}>Catogery </TableCell>
-                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold" }}>Date </TableCell>
-                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold" }}>Description </TableCell>
-                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold" }}>Amount </TableCell>
-                            <TableCell className="p-3" style={{ color: "#014f86" , fontWeight:"bold" }}>Currency </TableCell>
-                            
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell className="p-3">{renderIcon(row.title)}{row.title}</TableCell>
-                                <TableCell className="p-3">{row.date}</TableCell>
-                                <TableCell className="p-3">{row.description ? row.description : "N/A"}</TableCell>
-                                <TableCell className="p-3">{row.amount}</TableCell>
-                                <TableCell className="p-3">{"INR"}</TableCell>
-                                
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-      </div>    
-
-
-
-      
-
-           
-
-
-      
-
-
         </div>
     )
 }
