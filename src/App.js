@@ -25,8 +25,6 @@ import Dashboard from './components/Dashboard/Dashboard';
 import SignIn from './components/SignIn/SignIn';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import Insights from './components/Insights/Insights';
-import InsightsIn from './components/InsightsIn/InsightsIn';
-import Insightsinex from './components/Insightsinex/Insightsinex';
 import UserProfile from './components/UserProfile/UserProfile';
 
 export function formatNum(number) {
@@ -78,8 +76,6 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />}></Route>
         <Route path='/insights' element={<Insights />}></Route>
         <Route path='/forgotpassword' element={<ForgotPassword />}></Route>
-        <Route path='/insightsincome' element={<InsightsIn/>}></Route>
-        <Route path='/transactionscmp' element={<Insightsinex/>}></Route>
         <Route path='/profile' element={<UserProfile />}></Route>
       </Routes>
     </div>

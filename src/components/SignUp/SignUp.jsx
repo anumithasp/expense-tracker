@@ -5,8 +5,6 @@ import Form from 'react-bootstrap/Form'
 import { Copyright, ContentCopy } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import * as bootstrap from 'bootstrap';
-import Toast from '../Toast/Toast';
 
 const SignUp = () => {
     const [showCode, setShowCode] = useState(false);
@@ -185,7 +183,6 @@ const SignUp = () => {
     return (
       <div className='sign-up'>
         <div className='sign-up-wrapper'>
-        <Toast message="Copied to clipboard!" />
         <Grid container component="main" className='wrapper-main'>
         <Grid className='sign-up-input' item xs={12} sm={8} md={6}>
           <Box
