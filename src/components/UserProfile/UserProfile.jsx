@@ -6,7 +6,7 @@ import { Grid, Box, Paper, TextField, IconButton, InputAdornment, Button, Alert,
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Edit from '@mui/icons-material/Edit';
 import axios from 'axios';
-import { AdminPanelSettings, ContentCopy, InfoOutlined, PersonOutline, RemoveRedEye } from '@mui/icons-material';
+import { Security, ContentCopy, InfoOutlined, PersonOutline, RemoveRedEye } from '@mui/icons-material';
 import { Link, NavLink } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -353,7 +353,7 @@ const UserProfile = () => {
                       {family.map((fam) => (
                           <div>
                               <ListItem>
-                                  {fam.isAdmin ? <AdminPanelSettings fontSize='large'/> : <PersonOutline fontSize='large' />}
+                                  {fam.isAdmin ? <Security fontSize='large'/> : <PersonOutline fontSize='large' />}
                                   <div style={{ width: '90%' }}>
                                       <ListItemText secondary={fam.email} className='member-name' primary={fam.name} />
                                   </div>

@@ -4,17 +4,18 @@ import { Box, Grid, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material
 import axios from 'axios';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import LoginNav from '../LoginNav/LoginNav';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import IncomeIcon from '@mui/icons-material/CallReceived';
 import ExpenseIcon from '@mui/icons-material/NorthEast';
 import { useLocation } from 'react-router-dom';
+import { Delete } from '@mui/icons-material';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    height: 631,
+    height: 666,
     overflow: 'auto',
     lineHeight: '60px',
     fontFamily: 'Poppins',
@@ -37,37 +38,25 @@ const Item = styled(Paper)(({ theme }) => ({
     },
     '& .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows': {
         marginBottom: '0px'
+    },
+    '& .MuiDataGrid-toolbarContainer': {
+        justifyContent: 'flex-end',
+        '& button': {
+            color: '#014f86',
+            fontFamily: 'Poppins'
+        }
     }
   }));
 
-const expenseColumns = [
-    { field: 'title', headerName: 'Title', width: 400 },
-    { field: 'amount', headerName: 'Amount', width: 130 },
-    { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
-    { field: 'description', headerName: 'Description', sortable: false, width: 300 },
-    { field: 'category', headerName: 'Category', sortable: false, width: 200 }
-];
-
-const incomeColumns = [
-    { field: 'title', headerName: 'Title', width: 400 },
-    { field: 'amount', headerName: 'Amount', width: 130 },
-    { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
-    { field: 'description', headerName: 'Description', sortable: false, width: 300 },
-    { field: 'payer', headerName: 'Payer', width: 200 }
-];
-
-const transactionColumns = [
-    { field: 'isIncome', headerName: 'Income/Expense', sortable: false, width: 200, 
-            renderCell: (params) => params.row.isIncome === 1 ? <IncomeIcon sx={{ paddingRight: '5px', color: '#00c853' }} /> :
-            <ExpenseIcon sx={{ paddingRight: '5px', color: '#ff1744' }} />
-    },
-    { field: 'title', headerName: 'Title', width: 400 },
-    { field: 'amount', headerName: 'Amount', width: 130 },
-    { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
-    { field: 'description', headerName: 'Description', sortable: false, width: 300 }
-];
-
 const lightTheme = createTheme({ palette: { mode: 'light' } });
+
+const customToolBar = () => {
+    return (
+        <GridToolbarContainer>
+          <GridToolbarExport />
+        </GridToolbarContainer>
+    );
+}
 
 const Insights = () => {
     const [expenseData, setExpenseData] = useState([]);
@@ -104,6 +93,36 @@ const Insights = () => {
         });
     }
 
+    const deleteExpense = React.useCallback(
+        (id) => () => {
+            setTimeout(() => {
+                axios.delete('http://localhost:8080/expense/delete?id=' + id, {headers: headers})
+                .then(response => {
+                    if(response.data.code === 200) {
+                        setExpenseData((prevRows) => prevRows.filter((row) => row.id !== id));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting expense:', error);
+                });
+            });
+    },[],);
+
+    const deleteIncome = React.useCallback(
+        (id) => () => {
+            setTimeout(() => {
+                axios.delete('http://localhost:8080/income/delete?id=' + id, {headers: headers})
+                .then(response => {
+                    if(response.data.code === 200) {
+                        setIncomeData((prevRows) => prevRows.filter((row) => row.id !== id));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting income:', error);
+                });
+            });
+    },[],);
+
     useEffect(() => {
         if(location.state != null) {
             setAlignment(location.state.display);
@@ -111,6 +130,53 @@ const Insights = () => {
         }
         fetchData(alignment);
     }, [alignment]);
+
+    const expenseColumns = [
+        { field: 'title', headerName: 'Title', width: 350 },
+        { field: 'amount', headerName: 'Amount', width: 130 },
+        { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
+        { field: 'description', headerName: 'Description', sortable: false, width: 300 },
+        { field: 'category', headerName: 'Category', sortable: false, width: 200 },
+        { field: 'actions', type: 'actions', width: 80,
+          getActions: (params) => [
+            <GridActionsCellItem
+              icon={<Delete />}
+              label="Delete"
+              onClick={deleteExpense(params.id)}
+              showInMenu
+            />
+          ]
+        }
+    ];
+    
+    const incomeColumns = [
+        { field: 'title', headerName: 'Title', width: 350 },
+        { field: 'amount', headerName: 'Amount', width: 130 },
+        { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
+        { field: 'description', headerName: 'Description', sortable: false, width: 300 },
+        { field: 'payer', headerName: 'Payer', width: 200 },
+        { field: 'actions', type: 'actions', width: 80,
+          getActions: (params) => [
+            <GridActionsCellItem
+              icon={<Delete />}
+              label="Delete"
+              onClick={deleteIncome(params.id)}
+              showInMenu
+            />
+          ]
+        }
+    ];
+    
+    const transactionColumns = [
+        { field: 'isIncome', headerName: 'Income/Expense', sortable: false, width: 200, 
+                renderCell: (params) => params.row.isIncome === 1 ? <IncomeIcon sx={{ paddingRight: '5px', color: '#00c853' }} /> :
+                <ExpenseIcon sx={{ paddingRight: '5px', color: '#ff1744' }} />
+        },
+        { field: 'title', headerName: 'Title', width: 400 },
+        { field: 'amount', headerName: 'Amount', width: 130 },
+        { field: 'date', headerName: 'Date', type: 'date', width: 200, valueFormatter: (value, row) => dayjs(row.date).format('DD/MM/YYYY') },
+        { field: 'description', headerName: 'Description', sortable: false, width: 300 }
+    ];
 
     return (
         <div>
@@ -145,7 +211,7 @@ const Insights = () => {
                     >
                         <Item key={1} elevation={1}> 
                             <Grid xs={12} md={12} sm={12} xl={12}>
-                            <div style={{ height: 631, width: '100%' }}>
+                            <div style={{ height: 666, width: '100%' }}>
                                 {alignment === 'expense' && expenseData.length > 0 &&
                                     <DataGrid
                                         rows={expenseData}
@@ -157,9 +223,12 @@ const Insights = () => {
                                             },
                                         }}
                                         pageSizeOptions={[5, 10]}
+                                        slots={{
+                                            toolbar: customToolBar,
+                                        }}
                                 />}
                                 {alignment === 'expense' && expenseData.length === 0 &&
-                                    <p>No data available to display</p>
+                                    <p fontFamily="Poppins">No data available to display</p>
                                 }
                                 {alignment === 'income' && incomeData.length > 0 &&
                                     <DataGrid
@@ -172,9 +241,12 @@ const Insights = () => {
                                             },
                                         }}
                                         pageSizeOptions={[5, 10]}
+                                        slots={{
+                                            toolbar: customToolBar,
+                                        }}
                                 />}
                                 {alignment === 'income' && incomeData.length === 0 &&
-                                    <p>No data available to display</p>
+                                    <p fontFamily="Poppins">No data available to display</p>
                                 }
                                 {alignment === 'transactions' && transactions.length > 0 &&
                                     <DataGrid
@@ -187,9 +259,12 @@ const Insights = () => {
                                             },
                                         }}
                                         pageSizeOptions={[5, 10]}
+                                        slots={{
+                                            toolbar: customToolBar,
+                                        }}
                                 />}
                                 {alignment === 'transactions' && transactions.length === 0 &&
-                                    <p>No data available to display</p>
+                                    <p fontFamily="Poppins">No data available to display</p>
                                 }
                             </div>
                             </Grid>

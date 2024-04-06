@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import './TransactionBanner.css';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { Wallet, TrendingDown, TrendingUp } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -34,9 +35,14 @@ const TransactionBanner = (props) => {
             <div className='transaction'>
               <div className='header px-3'>
                 <h5><b>{props.title}</b></h5>
-                <a href='/insights'>
-                  See details
-                </a>
+                {props.title === 'INCOME' && 
+                <Link title='Click to view income details' to="/insights" state={{ display: "income" }}>
+                  <p>See details</p>
+                </Link>}
+                {props.title === 'EXPENSE' && 
+                <Link title='Click to view expense details' to="/insights" state={{ display: "expense" }}>
+                  <p>See details</p>
+                </Link>}
               </div>
               <div className='amount px-3'>
                 <h3><CurrencyRupeeIcon />{props.amount}</h3>

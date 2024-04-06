@@ -4,33 +4,89 @@ import axios from 'axios';
 import './ForgotPassword.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  height: 500,
+  width : 700,
+  lineHeight: '60px',
+  fontFamily: 'Poppins',
+  borderRadius: '10px',
+  '& .MuiPaper-root, & .MuiButtonBase-root, & .MuiFormLabel-root, & .MuiInputBase-inputMultiline': {
+    fontFamily: 'Poppins'
+  }
+}));
 
 const ForgotPassword = () => {
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    height: 500,
-    width : 700,
-    lineHeight: '60px',
-    fontFamily: 'Poppins',
-    borderRadius: '10px',
-    '& .MuiPaper-root, & .MuiButtonBase-root, & .MuiFormLabel-root, & .MuiInputBase-inputMultiline': {
-      fontFamily: 'Poppins'
+  const[input, setInput] = new useState(
+    {
+      email: ""
     }
-  }));
-
-  const [email, setEmail] = useState('');
+  )
   const [alert, setAlert] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isEmailFormatValid, setIsEmailFormatValid] = useState(true);
+  const [isEmailExist, setIsEmailExist] = useState(true);
 
+  const inputHandler = (event)=> {
+    setInput({...input,[event.target.name]:event.target.value});
+    if(event.target.name === "email") {
+      if(event.target.value === "") {
+        setIsEmailValid(false);
+        setIsEmailFormatValid(false);
+      } else {
+        if(validateEmail(event.target.value)){
+          setIsEmailFormatValid(true);
+          axios.get("http://localhost:8080/emailexists?email=" + event.target.value).then(
+            (response) => {
+              if(response.data.code === 200) {
+                setIsEmailExist(true);
+                setIsEmailValid(true);
+              } else if (response.data.code === 404) {
+                setIsEmailExist(false);
+                setIsEmailValid(false);
+              } else {
+                setIsEmailExist(false);
+                setIsEmailValid(false);
+              }
+            }
+          );
+        } else {
+          setIsEmailValid(false);
+          setIsEmailFormatValid(false);
+        }  
+      }
+    }
+  }
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/resetpassword?'+ email);
-      setAlert("Password reset link sent succesfully!");
+      const response = await axios.get('http://localhost:8080/forgotpassword?email='+ input.email);
+      if(response.data.code === 200) {
+        setAlert("Password reset link sent successfully. Please check your inbox.");
+        setTimeout(() => {
+          setAlert("");
+          setInput({
+            email: ""
+          });
+        }, 3000);
+      }
     } catch (error) {
-      setAlert('Failed to reset password!');
+      console.log(error);
+      setAlert('Failed to reset reset password link!');
+      setTimeout(() => {
+        setAlert("");
+      }, 3000);
     }
   };
 
@@ -56,13 +112,18 @@ const ForgotPassword = () => {
             </Grid>
             <Grid item xs={12} sx={12} md={12} >
                 <TextField
+                  error={!isEmailValid}
                   required
                   fullWidth
                   label="E-mail Id"
                   variant="outlined"
                   className="w-50"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  id="email"
+                  autoComplete="email"
+                  value={input.email}
+                  onChange={inputHandler}
+                  helperText = {isEmailFormatValid ? (!isEmailExist ? "Email is not registered in system." : "") : "Please enter a valid email-id."}
                 />
               </Grid>
               <Grid item xs={12} sx={12} md={12} >

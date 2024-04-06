@@ -146,7 +146,7 @@ const AddIncomeModal = (props) => {
 
     const [paymentTypes, setPaymentTypes] = useState([]);
     useEffect(()=>{
-      axios.get("http://localhost:8080/paymenttypes").then(
+      axios.get("http://localhost:8080/paymenttypes", {headers:headers}).then(
         (response) => {
           setPaymentTypes(response.data.paymentTypes);
         }
@@ -245,7 +245,7 @@ const AddIncomeModal = (props) => {
                   <Grid item xs={6} sm={6} md={6}>
                   <LocalizationProvider required dateAdapter={AdapterDayjs}>
                       <DatePicker className='income-date'
-                        label="Date of Purchase"
+                        label="Date of Payment"
                         fullWidth
                         required
                         name='date' 
