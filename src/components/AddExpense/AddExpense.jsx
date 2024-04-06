@@ -222,14 +222,14 @@ const AddExpense = (props) => {
       const [categories, setCategories] = useState([]);
       const [paymentTypes, setPaymentTypes] = useState([]);
       useEffect(() => {
-        axios.get("http://localhost:8080/categories").then(
+        axios.get("http://localhost:8080/categories",{headers:headers}).then(
                 (response)=>{
                     setCategories(response.data.categories);
                 }
               ).catch((err)=> {
                 console.log(err);
               })
-        axios.get("http://localhost:8080/paymenttypes").then(
+        axios.get("http://localhost:8080/paymenttypes",{headers:headers}).then(
           (response)=>{
               setPaymentTypes(response.data.paymentTypes);
           }
