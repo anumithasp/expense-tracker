@@ -9,6 +9,7 @@ import BarGraph from '../BarGraph/BarGraph';
 import { formatNum } from '../../App';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { DashboardCustomize, SpaceDashboard } from '@mui/icons-material';
 
 const Dashboard = () => {
   const [summary, setSummary] = useState([]);
@@ -26,7 +27,7 @@ const Dashboard = () => {
     viewAsUser = sessionStorage.getItem('id');
   }
 
-  const dashReload = () => {
+  const reload = () => {
     getSummary();
     getCategoricalExpenses();
     getCashFlow();
@@ -96,11 +97,11 @@ const Dashboard = () => {
 
   return (
     <div className='exp-dashboard'>
-      <LoginNav dashReload={dashReload}/>
+      <LoginNav reload={reload}/>
       <div className='content'>
         {sessionStorage.getItem("isAdmin") === 'true' && location.state != null &&
         <div className="view-as">
-          <h4 style={{ color: '#014f86', fontWeight: '600' }}>{location.state.name}</h4>
+          <h4 style={{ fontWeight: '600' }}>{location.state.name}</h4><p>'s</p><h4>&nbsp;<SpaceDashboard /></h4>
         </div>
         }
         <div className='first-row d-flex justify-content-between'>

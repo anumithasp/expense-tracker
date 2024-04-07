@@ -23,6 +23,8 @@
         .view-as {
             padding: 16px 0px 0px 16px;
             text-align: center;
+            display: flex;
+            color: var(--exp-primary-color);
         }
     }
     .header {

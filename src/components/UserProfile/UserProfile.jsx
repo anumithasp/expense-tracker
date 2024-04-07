@@ -6,7 +6,7 @@ import { Grid, Box, Paper, TextField, IconButton, InputAdornment, Button, Alert,
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Edit from '@mui/icons-material/Edit';
 import axios from 'axios';
-import { Security, ContentCopy, InfoOutlined, PersonOutline, RemoveRedEye } from '@mui/icons-material';
+import { Security, ContentCopy, InfoOutlined, PersonOutline, RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 import { Link, NavLink } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -61,6 +61,10 @@ const UserProfile = () => {
       "Authorization" : "Bearer " + sessionStorage.getItem("token")
     }
   )
+
+  const reload = () => {
+    //nothing to reload, just added to handle error as we have this functionality in dashboard
+  }
 
   useEffect(() => {
     getProfileDetails();
@@ -207,7 +211,7 @@ const UserProfile = () => {
 
   return (
     <div className='user-profile-settings'>
-      <LoginNav />
+      <LoginNav reload={reload} />
       <div className="container mb-3">
       <Grid item xs={12} sm={12} md={12} className='d-flex flex-column flex-start my-3 title' >
         <h3>Profile & General Settings</h3>
@@ -359,7 +363,7 @@ const UserProfile = () => {
                                   </div>
                                   <div style={{ width: '10%' }}>
                                     {!(sessionStorage.getItem("isAdmin") === 'true' || sessionStorage.getItem("id") == fam.userId) && 
-                                      <RemoveRedEye />
+                                      <VisibilityOff />
                                     }
                                     {(sessionStorage.getItem("isAdmin") === 'true' || sessionStorage.getItem("id") == fam.userId) && 
                                       <Link title={`Click to view ${fam.name}'s dashboard`} className='eye-link' to='/dashboard' state= {{ id: fam.userId, name: fam.name }}>

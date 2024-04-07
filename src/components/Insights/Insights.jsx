@@ -68,6 +68,14 @@ const Insights = () => {
     const handleChange = (event, newAlignment) => {
         setAlignment(newAlignment);
     };
+
+    const reload = () => {
+        if(location.state != null) {
+            setAlignment(location.state.display);
+            location.state = null;
+        }
+        fetchData(alignment);
+    }
     
     const [headers, setHeaders] = useState(
         {
@@ -180,11 +188,11 @@ const Insights = () => {
 
     return (
         <div>
-            <LoginNav />
+            <LoginNav reload={reload} />
             <div className="container mt-3"> 
                 <div id='head'>
                     <h4 className='text-start' id="h4text">Insights of your ayoola account</h4>
-                    <h6 className="text-start" id="h6text">Welcome to Ayoola Finanace Management and Budget Tracker.</h6>
+                    <h6 className="text-start" id="h6text">Welcome to Ayoola Finance Management and Budget Tracker.</h6>
                 </div>
                 <div className="mt-3" id="nav">
                     <ToggleButtonGroup

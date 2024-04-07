@@ -11,7 +11,7 @@ const LoginNav = (props) => {
   const nav=useNavigate();
 
   const reload = () => {
-    props.dashReload();
+    props.reload();
   }
 
   const handleLogout = () =>{
