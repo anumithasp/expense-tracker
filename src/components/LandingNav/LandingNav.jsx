@@ -1,6 +1,6 @@
 import React from 'react';
 import './LandingNav.css';
-import { Button, Container, Nav, NavLink, Navbar } from 'react-bootstrap';
+import {Container, Nav, NavLink, Navbar } from 'react-bootstrap';
 
 const LandingNav = () => {
   return (
@@ -14,15 +14,15 @@ const LandingNav = () => {
                 <Nav className="me-auto">
                 </Nav>
                 <Nav className='nav-links ml-auto'>
-                <Nav.Link as={NavLink} activeClassName="active" to="#about-us">About Us</Nav.Link>
-                <Nav.Link as={NavLink} activeClassName="active" to="/services">Services</Nav.Link>
-                <Nav.Link as={NavLink} activeClassName="active" to="/customer-care">Customer Care</Nav.Link>
-                <a className="nav-link" href="/login">
-                    <button className='btn btn-primary exp-btn-primary'>Sign In</button>
-                </a>
-                <a className="nav-link" href="/signup">
-                    <button className='btn btn-primary exp-btn-primary'>Sign Up</button>
-                </a>
+                    <Nav.Link as={NavLink} activeClassName="active" href="#about-us">About Us</Nav.Link>
+                    <Nav.Link as={NavLink} activeClassName="active" href="#services">Services</Nav.Link>
+                    <Nav.Link as={NavLink} activeClassName="active" href="#customer-care">Customer Care</Nav.Link>
+                    <a className="nav-link" href="/login">
+                        <button className='btn btn-primary exp-btn-primary'>Sign In</button>
+                    </a>
+                    <a className="nav-link" href="/signup">
+                        <button className='btn btn-primary exp-btn-primary'>Sign Up</button>
+                    </a>
                 </Nav>
             </Navbar.Collapse>
         </Container>
